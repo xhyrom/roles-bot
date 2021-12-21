@@ -5,7 +5,7 @@ let json = {
 $('input').change((e) => {
     json[e.currentTarget.id] = e.currentTarget.value;
 
-    document.getElementById('json').innerText = JSON.stringify(json);
+    document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
 })
 
 $('button[id=addRole]').click((e) => {
@@ -32,12 +32,12 @@ $('button[id=addRole]').click((e) => {
                 emoji: result.value[2] || null
             })
 
-            document.getElementById('json').innerText = JSON.stringify(json);
+            document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
         } else Swal.fire('Missing parameters')
     }).catch(swal.noop)
 })
 
 $(window).on('load', () => {
     $('input').toArray().forEach((i) => i.value = '');
-    document.getElementById('json').innerText = JSON.stringify(json);
+    document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
 })
