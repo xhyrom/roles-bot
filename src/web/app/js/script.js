@@ -37,7 +37,7 @@ $('button[id=addRole]').click((e) => {
     }).catch(swal.noop)
 })
 
-$('pre[id=json].copy').click((e) => {
+$('pre[id=jsonPre].copy').click((e) => {
     navigator.clipboard.writeText(e?.currentTarget?.textContent || e.textContent);
 
     Swal.fire({
