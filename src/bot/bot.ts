@@ -1,5 +1,6 @@
 import { APIApplicationCommandInteraction, APIInteractionResponse, APIMessageComponentInteraction, APIPingInteraction, InteractionResponseType, InteractionType, MessageFlags, RouteBases, Routes } from 'discord-api-types/v9';
 import { isJSON } from './isJson';
+import { isSnowflake } from './snowflakeUtils';
 import { verify } from './verify';
 
 const respond = (response: APIInteractionResponse) => new Response(JSON.stringify(response), {headers: {'content-type': 'application/json'}})
@@ -49,16 +50,19 @@ export const handleRequest = async(request: Request): Promise<Response> => {
         if (!roles || Object.values(json.roles).filter((role: any) => role.id && role.label).length === 0 || roles.length === 0 || roles.length > 25) return badFormatting(roles.length > 25);
 
         roles = roles.map((r: any) => {
-            return {
+            let o: any = {
                 type: 2,
                 style: r.style || 2,
                 label: r.label,
-                emoji: {
-                    id: null,
-                    name: r.emoji
-                },
                 custom_id: r.id
             }
+
+            if (r.emoji) {
+                if (isSnowflake(r.emoji)) o.emoji = { id: r.emoji, name: null };
+                else o.emoji = { id: null, name: r.emoji };
+            }
+
+            return o;
         })
 
         const finalComponents = [];
