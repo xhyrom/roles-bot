@@ -27,6 +27,15 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 
     if (interaction.type === InteractionType.ApplicationCommand && interaction.data.name === 'setup') {
         // @ts-ignore
+        if ((interaction.member?.permissions & 0x10) !== 0x10) return respond({
+            type: InteractionResponseType.ChannelMessageWithSource,
+            data: {
+                flags: 64,
+                content: `Required permissions: \`MANAGE_ROLES\``
+            }
+        })
+
+        // @ts-ignore
         const json = isJSON(interaction.data.options[0].value) ? JSON.parse(interaction.data.options[0].value) : null;
 
         if (!json) return badFormatting();
