@@ -37,6 +37,18 @@ $('button[id=addRole]').click((e) => {
     }).catch(swal.noop)
 })
 
+$('pre[id=json].copy').click((e) => {
+    navigator.clipboard.writeText(e?.currentTarget?.textContent || e.textContent);
+
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Copied!',
+        showConfirmButton: false,
+        timer: 1500
+    })
+})
+
 $(window).on('load', () => {
     $('input').toArray().forEach((i) => i.value = '');
     document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
