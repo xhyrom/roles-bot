@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,500;0,600;0,800;1,300;1,600;1,700&display=swap");
+html {
+  font-size: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.3;
+  margin: 0;
+  padding: 0;
+  background-color: var(--darkmode);
+  color: white;
+}
+
+:root {
+  --hyro: #eeee32;
+  --yellow: #ead800;
+  --yellow-dark: #d8a603;
+  --darkmode: #151515;
+  --codeblock: #242424;
+}
+
+.flex-container {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container {
+  background-color: #0e0e0e;
+  -webkit-filter: drop-shadow(0 0 0.75rem #0e0e0e);
+          filter: drop-shadow(0 0 0.75rem #0e0e0e);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 4rem 8rem;
+  border-radius: 1.2rem;
+}
+
+form {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 1rem 1.2rem;
+    border-radius: 1.2rem;
+  }
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 200;
+}
+
+h1 {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+a {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+button {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+button {
+  background-color: var(--yellow);
+  border-radius: .2rem;
+  border-style: none;
+  margin-top: .8rem;
+  font-size: 1.2rem;
+  padding: .2rem .8rem;
+  -webkit-filter: drop-shadow(0 0 0.75rem #363636);
+          filter: drop-shadow(0 0 0.75rem #363636);
+  -webkit-transition: .2s;
+  transition: .2s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--yellow-dark);
+}
+
+input {
+  color: white;
+  padding: .2rem .5rem;
+  background-color: var(--codeblock);
+  margin-top: .3rem;
+  font-size: 1.2rem;
+  border-style: none;
+  border-radius: .2rem;
+}
+
+.code {
+  background-color: var(--codeblock);
+  border-radius: .2rem;
+  padding: .2rem .5rem;
+}
+
+@media screen and (max-width: 600px) {
+  input {
+    font-size: 1rem;
+  }
+  button {
+    font-size: 1rem;
+    padding: .1rem .5rem;
+  }
+}
+/*# sourceMappingURL=style.css.map */
