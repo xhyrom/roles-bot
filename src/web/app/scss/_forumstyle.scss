@@ -25,9 +25,7 @@ input {
 }
 
 .code{
-    background-color: var(--codeblock);
-    border-radius: .2rem;
-    padding: .2rem .5rem;
+max-width: 900px;
 }
 
 @media screen and (max-width:600px) {
@@ -38,4 +36,7 @@ input {
         font-size: 1rem;
         padding: .1rem .5rem;
     }
+    .code{
+        max-width: 300px;
+        }
 }
