@@ -49,6 +49,19 @@ $('pre[id=jsonPre].copy').click((e) => {
     })
 })
 
+$('button[id=buttonCopy]').click((e) => {
+    const element = $('pre[id=jsonPre].copy')[0];
+    navigator.clipboard.writeText(element?.currentTarget?.textContent || element.textContent);
+
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Copied!',
+        showConfirmButton: false,
+        timer: 1500
+    })
+})
+
 $(window).on('load', () => {
     $('input').toArray().forEach((i) => i.value = '');
     document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
