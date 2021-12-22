@@ -12,7 +12,6 @@ export default function Home() {
         <script src="https://kit.fontawesome.com/5acf4d9e80.js" crossOrigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       </Head>
       <section className="flex-container">
         <div className="container animate__animated animate__fadeIn">
@@ -27,6 +26,7 @@ export default function Home() {
         </div>
       </section>
 
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <Script src="script.js"></Script>
       <Script id='hljs'>hljs.initHighlightingOnLoad();</Script>
     </div>
