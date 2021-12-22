@@ -1,4 +1,4 @@
-{
+module.exports = {
     "message": "lol",
     "channel": "862700556438732851",
     "roles": [
