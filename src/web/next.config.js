@@ -1,3 +1,3 @@
 module.exports = {
-    basePath: '/roles-bot',
+    assetPrefix: '/roles-bot/'
 }

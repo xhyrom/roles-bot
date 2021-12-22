@@ -15,8 +15,13 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: cd src/web && npm ci
-      - run: cd src/web && npm run ghbuild
+
+      - name: Build
+        run: |
+          cd src/web
+          npm i
+          npm run build
+          npm run export
 
       - name: Deploy site
         uses: JamesIves/github-pages-deploy-action@4.1.4

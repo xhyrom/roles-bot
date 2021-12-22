@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "export": "next export",
     "start": "next start",
-    "lint": "next lint",
-    "ghbuild": "next build && next export"
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "12.0.7",
