@@ -17,7 +17,7 @@ jobs:
           node-version: 12
       - run: cd src/web
       - run: npm ci
-      - run: npm run ghbuild
+      - run: cd src/web && npm run ghbuild
 
       - name: Deploy site
         uses: JamesIves/github-pages-deploy-action@4.1.4
