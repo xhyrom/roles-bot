@@ -4,8 +4,7 @@
   "main": "dist/worker.production.js",
   "scripts": {
     "build": "webpack ./src/bot",
-    "dev": "cross-env NODE_ENV=development npm run build",
-    "transpile": "tsc --project ./test"
+    "dev": "cross-env NODE_ENV=development npm run build"
   },
   "keywords": [],
   "author": "",
