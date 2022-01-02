@@ -18,7 +18,7 @@ jobs:
 
       - name: Build
         run: |
-          cd src/web
+          cd packages/website
           npm i
           npm run build
           npm run export
@@ -27,4 +27,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
-          folder: src/web/out
+          folder: packages/website/out
