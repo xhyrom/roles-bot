@@ -1,4 +1,4 @@
 dist/
 tests/
-src/web/
+packages/website/
 webpack.config.js
