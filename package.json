@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/worker.production.js",
   "scripts": {
-    "build": "webpack ./src/bot",
+    "build": "webpack ./packages/bot",
     "dev": "cross-env NODE_ENV=development npm run build"
   },
   "keywords": [],

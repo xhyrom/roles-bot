@@ -80,7 +80,7 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 			finalComponents.push(row);
 		}
 
-		await fetch(`${RouteBases.api}/channels/${channelId}/messages`, {
+		const fetched = await fetch(`${RouteBases.api}/channels/${channelId}/messages`, {
 			method: 'POST',
 			headers: {
 				'Authorization': `Bot ${CLIENT_TOKEN}`,
@@ -90,13 +90,13 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 				content: message,
 				components: finalComponents
 			})
-		}).catch(e => e);
+		}).catch(() => {});
 
 		return respond({
 			type: InteractionResponseType.ChannelMessageWithSource,
 			data: {
 				flags: 64,
-				content: 'Done!'
+				content: fetched?.ok ? 'Done!' : 'Error, invalid channelId'
 			}
 		});
 	} else if (interaction.type === InteractionType.MessageComponent) {
