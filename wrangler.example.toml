@@ -5,6 +5,7 @@ workers_dev = true
 route = ""
 zone_id = ""
 webpack_config = "webpack.config.js"
+compatibility_date = "2022-04-08"
 
 [build]
 command = "npm install && npm run build"

@@ -66,7 +66,7 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 			return o;
 		});
 
-		const finalComponents = [];
+		let finalComponents = [];
 		for (let i = 0; i <= roles.length; i += 5) {
 			const row: any = {
 				type: 1,
@@ -79,6 +79,8 @@ export const handleRequest = async(request: Request): Promise<Response> => {
             
 			finalComponents.push(row);
 		}
+
+		finalComponents = finalComponents.filter(a => a.components.length > 0);
 
 		const fetched = await fetch(`${RouteBases.api}/channels/${channelId}/messages`, {
 			method: 'POST',
@@ -96,7 +98,7 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 			type: InteractionResponseType.ChannelMessageWithSource,
 			data: {
 				flags: 64,
-				content: fetched?.ok ? 'Done!' : 'Error, invalid channelId'
+				content: fetched?.ok ? 'Done!' : 'Error, invalid channelId or duplication button ids.'
 			}
 		});
 	} else if (interaction.type === InteractionType.MessageComponent) {
