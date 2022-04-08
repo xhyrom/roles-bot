@@ -14,13 +14,15 @@ $('button[id=addRole]').click((e) => {
 		html:
             '<input id="swal-input1" class="swal2-input" placeholder="Button Label*" required />' +
             '<input id="swal-input2" class="swal2-input" placeholder="Role Id*" required />' +
-            '<input id="swal-input3" class="swal2-input" placeholder="Emoji" />',
+            '<input id="swal-input3" class="swal2-input" placeholder="Emoji" />' +
+			'<select id="swal-input4" class="swal2-input" style="display: flex;"><option value="" disabled="">Select a style</option><option value="1">Primary</option><option value="2">Secondary</option><option value="3">Success</option><option value="4">Danger</option></select>',
 		preConfirm: function () {
 			return new Promise(function (resolve) {
 				resolve([
 					$('#swal-input1').val(),
 					$('#swal-input2').val(),
-					$('#swal-input3').val()
+					$('#swal-input3').val(),
+					$('#swal-input4').val()
 				]);
 			});
 		}
@@ -29,7 +31,8 @@ $('button[id=addRole]').click((e) => {
 			json.roles.push({
 				id: result.value[1],
 				label: result.value[0],
-				emoji: result.value[2] || null
+				emoji: result.value[2] || null,
+				style: parseInt(result.value[3]) || 2
 			});
 
 			document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
