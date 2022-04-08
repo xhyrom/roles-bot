@@ -1,7 +1,7 @@
 const { createSecureHeaders } = require('next-secure-headers');
 
 module.exports = {
-	assetPrefix: '',
+	assetPrefix: '/roles-bot/',
 	async headers() {
 		return [{
 			source: '/(.*)',
