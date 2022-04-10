@@ -3,7 +3,7 @@ const json = {
 };
 
 $('input').change((e) => {
-	json[e.currentTarget.id] = e.currentTarget.value;
+	json[e.currentTarget.id] = e.currentTarget.value.replaceAll('\\n', '\n');
 
 	document.getElementById('json').innerHTML = hljs.highlight(JSON.stringify(json), { language: 'json' }).value;
 });
