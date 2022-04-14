@@ -18,7 +18,7 @@ export default function Home() {
 					<h1>Generate</h1>
 					<form>
 						<input placeholder="Your Message" name="message" id="message"/><br />
-						<input placeholder="Channel Id" name="channel" id="channel"/>
+						<input placeholder="Channel Id*" name="channel" id="channel" required/>
 					</form>
 					<button id="addRole">Add Role</button>
 					<button id="buttonCopy">Copy</button>

@@ -1,5 +1,6 @@
 import { APIApplicationCommandInteraction, APIInteractionResponse, APIMessageComponentInteraction, APIPingInteraction, InteractionResponseType, InteractionType, MessageFlags, RouteBases, Routes } from 'discord-api-types/v9';
 import { isJSON } from './utils/isJson';
+import { resolvePartialEmoji } from './utils/resolveEmoji';
 import { verify } from './utils/verify';
 
 const respond = (response: APIInteractionResponse) => new Response(JSON.stringify(response), {headers: {'content-type': 'application/json'}});
@@ -42,11 +43,11 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 		if (!json) return badFormatting();
 
 		const channelId = json.channel;
-		const message = json.message?.toString();
+		let message = json.message?.toString();
 		let roles = json.roles;
 
 		if (!channelId) return badFormatting();
-		if (!message) return badFormatting();
+		if (!message) message = '​';
 		if (!roles || Object.values(json.roles).filter((role: any) => role.id && role.label).length === 0 || roles.length === 0 || roles.length > 25) return badFormatting(roles.length > 25);
 
 		roles = roles.map((r: any) => {
@@ -88,13 +89,13 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 				content: message,
 				components: finalComponents
 			})
-		}).catch(() => {});
+		}).catch(e => e);
 
 		return respond({
 			type: InteractionResponseType.ChannelMessageWithSource,
 			data: {
 				flags: 64,
-				content: fetched?.ok ? 'Done!' : 'Error, invalid channelId or duplication button ids.'
+				content: fetched?.ok ? 'Done!' : 'Error, bad channel id/missing permissions.'
 			}
 		});
 	} else if (interaction.type === InteractionType.MessageComponent) {
