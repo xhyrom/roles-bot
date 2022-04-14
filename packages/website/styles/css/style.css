@@ -128,7 +128,7 @@ button:hover {
   background-color: var(--yellow-dark);
 }
 
-input {
+input, select {
   color: white;
   padding: .2rem .5rem;
   background-color: var(--codeblock);
@@ -154,7 +154,7 @@ input {
 }
 
 @media screen and (max-width: 600px) {
-  input {
+  input, select {
     font-size: 1rem;
   }
   button {

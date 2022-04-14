@@ -18,6 +18,11 @@ export default function Home() {
 					<h1>Generate</h1>
 					<form>
 						<input placeholder="Your Message" name="message" id="message"/><br />
+						<select placeholder="Message Type" name="type" id="type" required>
+							<option value="" disabled={true}>Select a type</option>
+							<option value="1">Buttons</option>
+							<option value="2">Select Menu</option>
+						</select><br />
 						<input placeholder="Channel Id*" name="channel" id="channel" required/>
 					</form>
 					<button id="addRole">Add Role</button>

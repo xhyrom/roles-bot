@@ -14,7 +14,7 @@ button {
     }
 }
 
-input {
+input, select {
     color: white;
     padding: .2rem .5rem;
     background-color: var(--codeblock);
@@ -40,7 +40,7 @@ max-width: 900px;
 }
 
 @media screen and (max-width:600px) {
-    input {
+    input, select {
         font-size: 1rem;
     }
     button {
