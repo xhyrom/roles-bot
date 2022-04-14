@@ -11,7 +11,6 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 
 	const interaction = await request.json() as APIPingInteraction | APIApplicationCommandInteraction | APIMessageComponentInteraction;
 
-	console.log(interaction);
 	if (interaction.type === InteractionType.Ping)
 		return respond({
 			type: InteractionResponseType.Pong
@@ -38,7 +37,7 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 		if (!message) message = '​';
 		if (!roles || Object.values(json.roles).filter((role: any) => role.id && role.label).length === 0 || roles.length === 0 || roles.length > 25) return badFormatting(roles.length > 25);
 
-		const finalComponents = json.type === 1 ? resolveButtonComponents(roles) : resolveSelectMenuComponents(roles, json.placeholder?.toString());
+		const finalComponents = json.type === "1" ? resolveButtonComponents(roles) : resolveSelectMenuComponents(roles, json.placeholder?.toString());
 
 		const fetched = await fetch(`${RouteBases.api}/channels/${channelId}/messages`, {
 			method: 'POST',
@@ -56,7 +55,7 @@ export const handleRequest = async(request: Request): Promise<Response> => {
 			type: InteractionResponseType.ChannelMessageWithSource,
 			data: {
 				flags: 64,
-				content: fetched?.ok ? 'Done!' : 'Error, bad channel id/missing permissions.'
+				content: fetched?.ok ? 'Done!' : 'Error, bad channel id/missing permissions/invalid emojis.'
 			}
 		});
 	} else if (interaction.type === InteractionType.MessageComponent) {
