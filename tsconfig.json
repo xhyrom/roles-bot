@@ -1,21 +1,11 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist",
-      "module": "commonjs",
-      "target": "esnext",
-      "lib": ["esnext"],
-      "alwaysStrict": true,
-      "strict": true,
-      "preserveConstEnums": true,
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "esModuleInterop": true,
-      "types": [
-        "@cloudflare/workers-types",
-        "@types/jest",
-        "@types/service-worker-mock"
-      ]
-    },
-    "include": ["src", "packages/bot"],
-    "exclude": ["node_modules", "dist", "test"]
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext", "webworker"],
+    "strict": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["@cloudflare/workers-types", "jest"]
+  }
 }
