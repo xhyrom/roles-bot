@@ -1,6 +1,5 @@
 {
-  "name": "roles-bot",
-  "version": "1.0.0",
+  "name": "bot",
   "main": "dist/worker.mjs",
   "type": "module",
   "scripts": {
