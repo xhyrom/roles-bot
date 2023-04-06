@@ -1,13 +1,13 @@
 import { Command } from "./structs/Command";
-import { Listener } from "./structs/Listener";
+import { Component } from "./structs/Component";
 
 export const COMMANDS: Command[] = [];
-export const LISTENERS: Listener[] = [];
+export const COMPONENTS: Component[] = [];
 
 export const registerCommand = (command: Command) => {
 	COMMANDS.push(command);
 };
 
-export const registerListener = (listener: Listener) => {
-	LISTENERS.push(listener);
+export const registerComponent = (component: Component) => {
+	COMPONENTS.push(component);
 };
