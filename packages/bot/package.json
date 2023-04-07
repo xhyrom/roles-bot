@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "dev": "miniflare --watch --debug --port 8787",
+    "dev:tunnel": "cloudflared tunnel --url localhost:8787/",
     "deploy": "cross-env NODE_ENV=production wrangler publish"
   },
   "keywords": [],

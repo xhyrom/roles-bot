@@ -1,3 +1,7 @@
 // secrets: wrangler secret put <name>
-declare const publicKey: string;
-declare const token: string;
+declare let MINIFLARE; // just check because algorithm is different
+
+declare interface Env {
+	publicKey: string;
+	token: string;
+}

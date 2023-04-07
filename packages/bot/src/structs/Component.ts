@@ -1,16 +1,14 @@
-import { APIMessageComponentInteraction } from "discord-api-types/v10";
 import { registerComponent } from "../registers";
+import { ComponentContext } from "./contexts/ComponentContext";
 
 interface ComponentOptions {
 	id: string;
-	run: (interaction: APIMessageComponentInteraction) => Promise<Response>;
+	run: (interaction: ComponentContext) => void;
 }
 
 export class Component {
 	public id: string;
-	public run: (
-		interaction: APIMessageComponentInteraction,
-	) => Promise<Response>;
+	public run: (interaction: ComponentContext) => void;
 
 	constructor(options: ComponentOptions) {
 		this.id = options.id;

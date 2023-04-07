@@ -10,28 +10,28 @@ function hex2bin(hex: string) {
 	return buf;
 }
 
-const PUBLIC_KEY = crypto.subtle.importKey(
-	"raw",
-	hex2bin(publicKey),
-	{
-		name: "NODE-ED25519",
-		namedCurve: "NODE-ED25519",
-	},
-	true,
-	["verify"],
-);
-
 const encoder = new TextEncoder();
 
-export async function verify(request: Request) {
+export async function verify(request: Request, env: Env) {
+	const subtle = await crypto.subtle.importKey(
+		"raw",
+		hex2bin(env.publicKey),
+		{
+			name: typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519",
+			namedCurve: typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519",
+		},
+		true,
+		["verify"],
+	);
+
 	// rome-ignore lint/style/noNonNullAssertion: its fine
 	const signature = hex2bin(request.headers.get("X-Signature-Ed25519")!);
 	const timestamp = request.headers.get("X-Signature-Timestamp");
 	const unknown = await request.clone().text();
 
 	return await crypto.subtle.verify(
-		"NODE-ED25519",
-		await PUBLIC_KEY,
+		typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519",
+		subtle,
 		signature,
 		encoder.encode(timestamp + unknown),
 	);
