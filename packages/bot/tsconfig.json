@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "downlevelIteration": true,
     "lib": ["esnext", "webworker"],
     "strict": true,
     "moduleResolution": "node",

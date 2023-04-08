@@ -7,6 +7,7 @@ import {
 	Routes,
 } from "discord-api-types/v10";
 import respond from "../../utils/respond";
+import { Env } from "../../types";
 
 export class Context {
 	public interaction: APIInteraction;
@@ -17,10 +18,12 @@ export class Context {
 		this.env = env;
 	}
 
+	public respond = respond;
+
 	public async editReply(content: APIInteractionResponseCallbackData) {
 		return await fetch(
 			`${RouteBases.api}${Routes.webhookMessage(
-				this.interaction.id,
+				this.interaction.application_id,
 				this.interaction.token,
 			)}`,
 			{

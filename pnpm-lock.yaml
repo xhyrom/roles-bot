@@ -16,6 +16,9 @@ importers:
       discord-api-types:
         specifier: ^0.37.37
         version: 0.37.37
+      serialize:
+        specifier: workspace:*
+        version: link:../serialize
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^3.17.0
@@ -51,6 +54,19 @@ importers:
       esbuild:
         specifier: ^0.15.11
         version: 0.15.18
+      typescript:
+        specifier: ^4.8.4
+        version: 4.8.4
+
+  packages/serialize:
+    dependencies:
+      '@paperdave/utils':
+        specifier: ^1.6.1
+        version: 1.6.1
+    devDependencies:
+      esbuild:
+        specifier: ^0.15.11
+        version: 0.15.11
       typescript:
         specifier: ^4.8.4
         version: 4.8.4
@@ -1296,6 +1312,14 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+
+  /@paperdave/utils@1.6.1:
+    resolution: {integrity: sha512-LA9itR/tlnqztz3Scz/fFpQOaQMBrCylEoC5yM2cweUnvxRypCAOkB9TR9EcTI8sx7TlhpzFOFGCzTL5FnWBtQ==}
+    engines: {bun: '>=0.1.9', node: '>=16'}
+    dependencies:
+      utility-types: 3.10.0
+      yaml: 2.2.1
+    dev: false
 
   /@pkgr/utils@2.3.1:
     resolution: {integrity: sha512-wfzX8kc1PMyUILA+1Z/EqoE4UCXGy0iRGMhPwdfae1+f0OXlLqCk+By+aMzgJBzR9AzS4CDizioG6Ss1gvAFJw==}
@@ -6137,6 +6161,11 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: false
+
+  /utility-types@3.10.0:
+    resolution: {integrity: sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==}
+    engines: {node: '>= 4'}
     dev: false
 
   /uvu@0.5.6:

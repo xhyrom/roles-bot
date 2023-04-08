@@ -16,6 +16,7 @@ import respond from "./utils/respond";
 import { CommandContext } from "./structs/contexts/CommandContext";
 import { ComponentContext } from "./structs/contexts/ComponentContext";
 import { ModalContext } from "./structs/contexts/ModalContext";
+import { Env } from "./types";
 
 export default {
 	fetch: async (request: Request, env: Env) => {
@@ -64,24 +65,31 @@ export default {
 				break;
 			}
 			case InteractionType.ModalSubmit: {
-				const modal = MODALS.find((md) => md.id === interaction.data.custom_id);
+				const context = new ModalContext(interaction, env);
+				const modal = MODALS.find((md) => md.id === context.decodedId.type);
 
 				if (!modal) return new Response("Unknown modal", { status: 404 });
 
 				try {
-					return respond({
-						type: InteractionResponseType.DeferredChannelMessageWithSource,
-						data: {
-							flags: modal.flags,
-						},
-					});
+					if (modal.acknowledge)
+						return respond({
+							type: InteractionResponseType.DeferredChannelMessageWithSource,
+							data: {
+								flags: modal.flags,
+							},
+						});
 				} finally {
-					modal.run(new ModalContext(interaction, env));
+					if (modal.acknowledge) modal.run(context);
+					// rome-ignore lint/correctness/noUnsafeFinally: it works, must do better typings etc...
+					else return modal.run(context);
 				}
+
+				break;
 			}
 			case InteractionType.MessageComponent: {
+				const context = new ComponentContext(interaction, env);
 				const component = COMPONENTS.find(
-					(cmp) => cmp.id === interaction.data.custom_id,
+					(cmp) => cmp.id === context.decodedId.type,
 				);
 
 				if (!component)
@@ -96,10 +104,9 @@ export default {
 							},
 						});
 				} finally {
-					if (component.acknowledge)
-						component.run(new ComponentContext(interaction, env));
+					if (component.acknowledge) component.run(context);
 					// rome-ignore lint/correctness/noUnsafeFinally: it works, must do better typings etc...
-					else return component.run(new ComponentContext(interaction, env));
+					else return component.run(context);
 				}
 			}
 		}

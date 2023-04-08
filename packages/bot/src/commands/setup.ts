@@ -1,45 +1,39 @@
 import { Command } from "../structs/Command";
-import { MessageFlags, TextInputStyle } from "discord-api-types/v10";
-import { ActionRowBuilder, TextInputBuilder } from "builders";
+import {
+	ChannelType,
+	InteractionResponseType,
+	MessageFlags,
+} from "discord-api-types/v10";
+import { ActionRowBuilder, ChannelSelectMenuBuilder } from "builders";
+import { serializers } from "serialize";
 
+// Part 1 ## select channel
 new Command({
 	name: "setup",
-	flags: MessageFlags.Ephemeral,
 	acknowledge: false,
 	run: async (ctx) => {
-		return ctx.returnModal({
-			title: "Setup",
-			custom_id: "test",
-			components: [
-				new ActionRowBuilder<TextInputBuilder>()
-					.addComponents(
-						new TextInputBuilder()
-							.setLabel("ASDSAD")
-							.setCustomId("prefix")
-							.setPlaceholder("Prefix")
-							.setStyle(TextInputStyle.Paragraph)
-							.setRequired(true),
-					)
-					.toJSON(),
-			],
+		return ctx.respond({
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content: "Select the channel to which the panel will be sent.",
+				components: [
+					new ActionRowBuilder<ChannelSelectMenuBuilder>()
+						.addComponents(
+							new ChannelSelectMenuBuilder()
+								.setCustomId(
+									serializers.genericObject.encodeCustomId({
+										type: "setup:part-channel",
+									}),
+								)
+								.addChannelTypes(
+									ChannelType.GuildAnnouncement,
+									ChannelType.GuildText,
+								),
+						)
+						.toJSON(),
+				],
+				flags: MessageFlags.Ephemeral,
+			},
 		});
-
-		/**
-		 * await ctx.editReply({
-			content: "Select the channel to which the panel will be sent.",
-			components: [
-				new ActionRowBuilder<ChannelSelectMenuBuilder>()
-					.addComponents(
-						new ChannelSelectMenuBuilder()
-							.setCustomId("setup:part-channel")
-							.addChannelTypes(
-								ChannelType.GuildAnnouncement,
-								ChannelType.GuildText,
-							),
-					)
-					.toJSON(),
-			],
-		});
-		 */
 	},
 });
