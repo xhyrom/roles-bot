@@ -25,6 +25,7 @@ Promise.all([
 		charset: "utf8",
 		minify: !dev,
 		watch: watch,
+		external: ["node:events"],
 	}),
 ])
 	.catch((err) => {
