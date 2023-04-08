@@ -13,7 +13,7 @@ import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
     <meta name="title" content={CONFIG.name} />
     <meta name="description" content={CONFIG.name} />
 
-    <!-- <link rel="icon" href={logoImage} type="image/png" sizes="64x64" /> -->
+    <link rel="icon" href="logo.png" type="image/png" sizes="64x64" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -37,7 +37,7 @@ import { GoogleFontsOptimizer } from "astro-google-fonts-optimizer";
     />
     <link rel="stylesheet" href="../src/assets/styles/base.css" />
   </head>
-  <body class="font-body bg-dark">
+  <body class="bg-dark font-body">
     <slot />
   </body>
 </html>
