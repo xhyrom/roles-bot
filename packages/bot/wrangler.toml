@@ -2,7 +2,6 @@ name = "roles-bot"
 type = "javascript"
 account_id = "294bee38d448e390dab3757215c63f03"
 compatibility_date = "2022-07-12"
-compatibility_flags = [ "nodejs_compat" ]
 
 main = "dist/worker.mjs"
 
