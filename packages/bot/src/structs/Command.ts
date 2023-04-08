@@ -9,7 +9,7 @@ interface CommandOptions {
 	run: (interaction: CommandContext) => void;
 }
 
-export class Command<A> {
+export class Command {
 	public name: string;
 	public acknowledge: boolean;
 	public flags: MessageFlags | undefined;

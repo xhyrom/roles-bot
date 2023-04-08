@@ -88,14 +88,18 @@ export default {
 					return new Response("Unknown component", { status: 404 });
 
 				try {
-					return respond({
-						type: InteractionResponseType.DeferredChannelMessageWithSource,
-						data: {
-							flags: component.flags,
-						},
-					});
+					if (component.acknowledge)
+						return respond({
+							type: InteractionResponseType.DeferredChannelMessageWithSource,
+							data: {
+								flags: component.flags,
+							},
+						});
 				} finally {
-					component.run(new ComponentContext(interaction, env));
+					if (component.acknowledge)
+						component.run(new ComponentContext(interaction, env));
+					// rome-ignore lint/correctness/noUnsafeFinally: it works, must do better typings etc...
+					else return component.run(new ComponentContext(interaction, env));
 				}
 			}
 		}
