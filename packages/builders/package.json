@@ -1,0 +1,18 @@
+{
+  "name": "builders",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "node scripts/build.mjs && tsc --declaration --emitDeclarationOnly src/index.ts --outDir dist"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.11",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@discordjs/util": "^0.2.0",
+    "discord-api-types": "^0.37.37"
+  }
+}
