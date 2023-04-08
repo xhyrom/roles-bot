@@ -1,84 +1,46 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import Layout from "~/layouts/Layout.astro";
+import Invite from "~/components/Invite.astro";
+import Computer from "~/components/Computer.astro";
 ---
 
-<Layout title="Welcome to Astro.">
-  <main>
-    <h1 class="text-center">
-      Welcome to <span class="text-gradient">Astro</span>
-    </h1>
-    <p class="instructions">
-      To get started, open the directory <code>src/pages</code> in your project.<br
+<Layout>
+  <main class="flex h-screen items-center justify-center text-center">
+    <div
+      class="flex flex-col items-center px-4 text-center md:flex-row md:text-left"
+    >
+      <img
+        src="https://raw.githubusercontent.com/Hyro-Blobs/blobs/main/other/hyro_santa_bucket.png"
+        alt=""
+        class="mb-6 h-48 w-48 rounded-full md:h-64 md:w-64"
       />
-      <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-    </p>
-    <ul role="list" class="link-card-grid">
-      <Card
-        href="https://docs.astro.build/"
-        title="Documentation"
-        body="Learn how Astro works and explore the official API docs."
-      />
-      <Card
-        href="https://astro.build/integrations/"
-        title="Integrations"
-        body="Supercharge your project with new frameworks and libraries."
-      />
-      <Card
-        href="https://astro.build/themes/"
-        title="Themes"
-        body="Explore a galaxy of community-built starter themes."
-      />
-      <Card
-        href="https://astro.build/chat/"
-        title="Community"
-        body="Come say hi to our amazing Discord community. ❤️"
-      />
-    </ul>
+      <div>
+        <h1 class="mb-4 text-6xl font-extrabold text-white md:text-7xl">
+          Roles Bot
+        </h1>
+        <p class="max-w-3xl text-lg text-gray-300 md:text-xl">
+          Ultimate solution for managing reaction roles in your Discord server,
+          and the best part is, it's completely <strong>free</strong>! No hidden
+          charges or payments like other bots. Try it out today and see for
+          yourself how <strong>easy</strong> it is to use!
+        </p>
+        <div class="mt-6 flex flex-col gap-6 md:flex-row">
+          <a
+            href=""
+            class="broder-1 flex items-center justify-center gap-x-3 rounded-lg border border-[#4e59d6] bg-[#373a54]/50 px-10 py-3 text-lg font-semibold text-white transition-colors hover:bg-[#373a54]"
+          >
+            <Computer />
+            GitHub</a
+          >
+          <a
+            href=""
+            class="broder-1 flex items-center justify-center gap-x-3 rounded-lg border border-[#4e59d6] bg-[#373a54]/50 px-10 py-3 text-lg font-semibold text-white transition-colors hover:bg-[#373a54]"
+          >
+            <Invite />
+            Invite</a
+          >
+        </div>
+      </div>
+    </div>
   </main>
 </Layout>
-
-<style>
-  main {
-    margin: auto;
-    padding: 1.5rem;
-    max-width: 60ch;
-  }
-  h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    margin: 0;
-  }
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-  .instructions {
-    line-height: 1.6;
-    margin: 1rem 0;
-    border: 1px solid rgba(var(--accent), 25%);
-    background-color: white;
-    padding: 1rem;
-    border-radius: 0.4rem;
-  }
-  .instructions code {
-    font-size: 0.875em;
-    font-weight: bold;
-    background: rgba(var(--accent), 12%);
-    color: rgb(var(--accent));
-    border-radius: 4px;
-    padding: 0.3em 0.45em;
-  }
-  .instructions strong {
-    color: rgb(var(--accent));
-  }
-  .link-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-    gap: 1rem;
-    padding: 0;
-  }
-</style>
