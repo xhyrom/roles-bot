@@ -42,4 +42,4 @@ fastify.post("/flush", async (request, reply) => {
 	reply.send(await redis.flushdb());
 });
 
-fastify.listen({ port: 51253 }, console.log);
+fastify.listen({ port: 51254 }, console.log);
