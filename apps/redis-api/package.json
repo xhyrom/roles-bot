@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "dev": "node scripts/build.mjs --dev && node dist/index.mjs"
+    "dev": "node scripts/build.mjs --dev && node dist/index.mjs",
+    "start": "node dist/index.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.15.11",
