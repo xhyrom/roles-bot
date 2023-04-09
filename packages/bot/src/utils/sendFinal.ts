@@ -158,6 +158,16 @@ export default async function (ctx: Context, data: Data) {
 				await ctx.editReply({
 					content: `Error: ${json.message} (${json.code})`,
 				});
+			} else {
+				await fetch(
+					`${RouteBases.api}${Routes.webhook(
+						data.webhook.id,
+						data.webhook.token,
+					)}`,
+					{
+						method: "DELETE",
+					},
+				);
 			}
 		}
 	}
