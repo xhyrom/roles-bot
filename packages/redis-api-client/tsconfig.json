@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "target": "ESNext",
+    "lib": ["ESNext", "WebWorker"],
+    "module": "ESNext",
+    "strict": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  }
+}

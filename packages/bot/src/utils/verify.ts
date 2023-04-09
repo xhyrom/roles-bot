@@ -2,6 +2,8 @@
 
 "use strict";
 
+import type { Env } from "../types";
+
 function hex2bin(hex: string) {
 	const buf = new Uint8Array(Math.ceil(hex.length / 2));
 	for (let i = 0; i < buf.length; i++) {

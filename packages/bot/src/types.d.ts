@@ -18,4 +18,6 @@ declare type DeclaredId = Record<
 declare interface Env {
 	publicKey: string;
 	token: string;
+	redisApiClientKey: string;
+	redisApiClientHost: string;
 }

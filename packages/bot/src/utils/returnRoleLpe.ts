@@ -1,19 +1,33 @@
-import { Generic, serializers } from "serialize";
 import { Context } from "../structs/contexts/Context";
 import { ActionRowBuilder, TextInputBuilder } from "builders";
-import { TextInputStyle } from "discord-api-types/v10";
+import {
+	APIRole,
+	InteractionResponseType,
+	MessageFlags,
+	TextInputStyle,
+} from "discord-api-types/v10";
+import { REDIS } from "../things";
+import { decodeFromString } from "serialize";
 
-export default function (
-	data: Record<string, Generic>,
-	ctx: Context,
-	rawRole: string,
-) {
+export default async function (ctx: Context, rawRole: string) {
+	const rolesRaw = await REDIS.get(`roles-bot-setup-roles:${ctx.guildId}`);
+	if (!rolesRaw)
+		return ctx.respond({
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content:
+					"Something went wrong. Please try again.\nIf this problem persists, please contact [Support Server](https://discord.gg/kFPKmEKeMS/).",
+				flags: MessageFlags.Ephemeral,
+			},
+		});
+
+	const roles = decodeFromString(rolesRaw) as Partial<APIRole>[];
+
+	const roleName = roles?.find((r) => r.id === rawRole)?.name;
+
 	return ctx.returnModal({
-		title: `Role Setup ${rawRole}`,
-		custom_id: serializers.genericObject.encodeCustomId({
-			type: "setup:part-roles-lpe",
-			data,
-		}),
+		title: `${roleName?.slice(0, 39)} Role`,
+		custom_id: "setup:part-roles-lpe",
 		components: [
 			new ActionRowBuilder<TextInputBuilder>()
 				.addComponents(

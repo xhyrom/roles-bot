@@ -1,5 +1,5 @@
 import { MessageFlags } from "discord-api-types/v10";
-import { registerCommand } from "../registers";
+import { registerCommand } from "../things";
 import { CommandContext } from "./contexts/CommandContext";
 
 interface CommandOptions {

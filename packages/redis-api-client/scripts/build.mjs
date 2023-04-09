@@ -28,11 +28,11 @@ Promise.all([
 	}),
 ])
 	.catch((err) => {
-		console.error("Serialize failed to build");
+		console.error("Builders failed to build");
 		console.error(err.message);
 	})
 	.then(() => {
 		console.log(
-			watch ? "Waiting for your changes..." : "Serialize has been built",
+			watch ? "Waiting for your changes..." : "Builders has been built",
 		);
 	});

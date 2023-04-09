@@ -10,7 +10,7 @@ import {
 	InteractionResponseType,
 	InteractionType,
 } from "discord-api-types/v10";
-import { COMMANDS, COMPONENTS, MODALS } from "./registers";
+import { COMMANDS, COMPONENTS, MODALS, REDIS, setRedis } from "./things";
 import { verify } from "./utils/verify";
 import respond from "./utils/respond";
 import { CommandContext } from "./structs/contexts/CommandContext";
@@ -20,6 +20,8 @@ import { Env } from "./types";
 
 export default {
 	fetch: async (request: Request, env: Env) => {
+		if (!REDIS) setRedis(env.redisApiClientKey, env.redisApiClientHost);
+
 		if (
 			!request.headers.get("X-Signature-Ed25519") ||
 			!request.headers.get("X-Signature-Timestamp")
@@ -66,7 +68,9 @@ export default {
 			}
 			case InteractionType.ModalSubmit: {
 				const context = new ModalContext(interaction, env);
-				const modal = MODALS.find((md) => md.id === context.decodedId.type);
+				const modal = MODALS.find((md) =>
+					context.interaction.data.custom_id.startsWith(md.id),
+				);
 
 				if (!modal) return new Response("Unknown modal", { status: 404 });
 
@@ -88,8 +92,8 @@ export default {
 			}
 			case InteractionType.MessageComponent: {
 				const context = new ComponentContext(interaction, env);
-				const component = COMPONENTS.find(
-					(cmp) => cmp.id === context.decodedId.type,
+				const component = COMPONENTS.find((cmp) =>
+					context.interaction.data.custom_id.startsWith(cmp.id),
 				);
 
 				if (!component)

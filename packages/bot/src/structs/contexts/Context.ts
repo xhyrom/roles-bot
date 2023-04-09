@@ -18,6 +18,10 @@ export class Context {
 		this.env = env;
 	}
 
+	get guildId() {
+		return this.interaction.guild_id;
+	}
+
 	public respond = respond;
 
 	public async editReply(content: APIInteractionResponseCallbackData) {

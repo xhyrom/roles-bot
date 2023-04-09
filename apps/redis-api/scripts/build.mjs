@@ -39,11 +39,11 @@ Promise.all([
 	}),
 ])
 	.catch((err) => {
-		console.error("Builders failed to build");
+		console.error("Redis api failed to build");
 		console.error(err.message);
 	})
 	.then(() => {
 		console.log(
-			watch ? "Waiting for your changes..." : "Builders has been built",
+			watch ? "Waiting for your changes..." : "Redis api has been built",
 		);
 	});

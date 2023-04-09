@@ -12,17 +12,32 @@ import {
 	MessageFlags,
 	TextInputStyle,
 } from "discord-api-types/v10";
-import { serializers } from "serialize";
 import returnRoleLpe from "../utils/returnRoleLpe";
+import { REDIS } from "../things";
+import { encodeToHex, decodeFromString } from "serialize";
 
 // Part 2 Channels ## select button/dropdowns
 new Component({
 	id: "setup:part-channel",
 	flags: MessageFlags.Ephemeral,
 	run: async (ctx) => {
+		if (!ctx.interaction.guild_id)
+			return await ctx.editReply({
+				content: "Guild not found.",
+			});
+
 		const interaction =
 			ctx.interaction as APIMessageComponentSelectMenuInteraction;
-		const channelId = interaction.data.values[0];
+
+		const data = {
+			channelId: interaction.data.values[0],
+		};
+
+		await REDIS.setex(
+			`roles-bot-setup:${interaction.guild_id}`,
+			encodeToHex(data),
+			600,
+		);
 
 		await ctx.editReply({
 			content:
@@ -32,27 +47,11 @@ new Component({
 					.addComponents(
 						new ButtonBuilder()
 							.setLabel("Buttons")
-							.setCustomId(
-								serializers.genericObject.encodeCustomId({
-									type: "setup:part-selecting",
-									data: {
-										channelId,
-										selecting: 1,
-									},
-								}),
-							)
+							.setCustomId("setup:part-selecting:buttons")
 							.setStyle(ButtonStyle.Primary),
 						new ButtonBuilder()
 							.setLabel("Dropdowns")
-							.setCustomId(
-								serializers.genericObject.encodeCustomId({
-									type: "setup:part-selecting",
-									data: {
-										channelId,
-										selecting: 2,
-									},
-								}),
-							)
+							.setCustomId("setup:part-selecting:dropdowns")
 							.setStyle(ButtonStyle.Primary),
 					)
 					.toJSON(),
@@ -66,7 +65,25 @@ new Component({
 	id: "setup:part-selecting",
 	flags: MessageFlags.Ephemeral,
 	run: async (ctx) => {
-		const data = ctx.decodedId.data;
+		if (!ctx.interaction.guild_id)
+			return await ctx.editReply({ content: "Guild not found." });
+
+		const rawData = await REDIS.get(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+		);
+		if (!rawData)
+			return await ctx.editReply({
+				content: "Data not found. Try running setup again.",
+			});
+
+		const data = decodeFromString(rawData);
+		data.selecting = ctx.interaction.data.custom_id.split(":")[2];
+
+		await REDIS.setex(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+			encodeToHex(data),
+			600,
+		);
 
 		await ctx.editReply({
 			content: "Select the roles that will be available in the menu.",
@@ -74,12 +91,7 @@ new Component({
 				new ActionRowBuilder<RoleSelectMenuBuilder>()
 					.addComponents(
 						new RoleSelectMenuBuilder()
-							.setCustomId(
-								serializers.genericObject.encodeCustomId({
-									type: "setup:part-roles",
-									data,
-								}),
-							)
+							.setCustomId("setup:part-roles")
 							.setPlaceholder("Select roles")
 							.setMinValues(1)
 							.setMaxValues(25),
@@ -94,23 +106,41 @@ new Component({
 new Component({
 	id: "setup:part-roles",
 	acknowledge: false,
-	run: (ctx) => {
-		const previousData = ctx.decodedId.data;
+	run: async (ctx) => {
+		if (!ctx.interaction.guild_id)
+			return await ctx.editReply({ content: "Guild not found." });
+
 		const interaction =
 			ctx.interaction as APIMessageComponentSelectMenuInteraction;
-		const rawRoleIds =
-			(previousData.rawRoleIds as string[]) ?? interaction.data.values;
 
-		const data = { ...previousData, rawRoleIds };
+		const rawData = await REDIS.get(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+		);
+		if (!rawData)
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Data not found. Try running setup again.",
+					flags: MessageFlags.Ephemeral,
+				},
+			});
+
+		const data = decodeFromString(rawData);
+		const rawRoleIds = (data.rawRoleIds as string[]) ?? interaction.data.values;
+
+		data.rawRoleIds = rawRoleIds;
+
+		await REDIS.setex(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+			encodeToHex(data),
+			600,
+		);
 
 		return rawRoleIds.length > 0
-			? returnRoleLpe(data, ctx, rawRoleIds[0])
+			? returnRoleLpe(ctx, rawRoleIds[0])
 			: ctx.returnModal({
 					title: "Message Preview",
-					custom_id: serializers.genericObject.encodeCustomId({
-						type: "setup:part-messageContent",
-						data,
-					}),
+					custom_id: "setup:part-messageContent",
 					components: [
 						new ActionRowBuilder<TextInputBuilder>()
 							.addComponents(
@@ -166,30 +196,38 @@ new Component({
 	id: "setup:part-sendAs",
 	acknowledge: false,
 	run: async (ctx) => {
-		const channelId = ctx.decodedId.data.channelId;
-		const selecting =
-			ctx.decodedId.data.selecting === 1 ? "buttons" : "dropdowns";
-		const roleIds = ctx.decodedId.data.roleIds as {
-			label: string;
-			placeholder: string;
-			emoji: string;
-		}[];
-		const message = ctx.decodedId.data.message;
-		const sendAs = ctx.decodedId.data.sendAs === 1 ? "webhook" : "bot";
+		if (!ctx.interaction.guild_id)
+			return await ctx.editReply({ content: "Guild not found." });
 
-		console.log(channelId, roleIds, message, sendAs);
+		const rawData = await REDIS.get(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+		);
+		if (!rawData)
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Data not found. Try running setup again.",
+					flags: MessageFlags.Ephemeral,
+				},
+			});
+
+		const data = decodeFromString(rawData);
+		console.log(data);
+
+		// delete data
+		await REDIS.del(`roles-bot-setup:${ctx.guildId}`);
 
 		// TODO: finish sending
 		const actionRow = new ActionRowBuilder();
 
-		switch (selecting) {
+		/*switch (selecting) {
 			case "buttons": {
 				// TOOD: finish
 			}
 			case "dropdowns": {
 				// TODO: finish
 			}
-		}
+		}*/
 
 		return ctx.respond({
 			type: InteractionResponseType.ChannelMessageWithSource,

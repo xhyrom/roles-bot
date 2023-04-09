@@ -1,5 +1,5 @@
 import { MessageFlags } from "discord-api-types/v10";
-import { registerModal } from "../registers";
+import { registerModal } from "../things";
 import { ModalContext } from "./contexts/ModalContext";
 
 interface ModalOptions {

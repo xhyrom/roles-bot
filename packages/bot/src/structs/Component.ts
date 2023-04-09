@@ -1,5 +1,5 @@
 import { MessageFlags } from "discord-api-types/v10";
-import { registerComponent } from "../registers";
+import { registerComponent } from "../things";
 import { ComponentContext } from "./contexts/ComponentContext";
 
 interface ComponentOptions {

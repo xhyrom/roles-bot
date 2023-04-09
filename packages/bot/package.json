@@ -23,6 +23,7 @@
   "dependencies": {
     "builders": "workspace:*",
     "serialize": "workspace:*",
+    "redis-api-client": "workspace:*",
     "discord-api-types": "^0.37.37"
   }
 }
