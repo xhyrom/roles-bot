@@ -1,24 +1,24 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist"]
-    },
-    "dev": {
-      "outputs": ["dist"]
-    },
-    "dev:tunnel": {
-      "outputs": ["dist"]
-    },
-    "preview": {
-      "outputs": ["dist"]
-    },
-    "deploy": {
-      "dependsOn": ["build", "test", "lint"]
-    },
-    "test": {
-      "dependsOn": ["^build"]
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist"]
+		},
+		"dev": {
+			"outputs": ["dist"]
+		},
+		"dev:tunnel": {
+			"outputs": ["dist"]
+		},
+		"preview": {
+			"outputs": ["dist"]
+		},
+		"deploy": {
+			"dependsOn": ["build", "test", "lint"]
+		},
+		"test": {
+			"dependsOn": ["^build"]
+		}
+	}
 }

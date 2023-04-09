@@ -1,11 +1,11 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "rome.rome"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "rome.rome"
-  },
-  "[astro]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+	"[typescript]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[astro]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }
