@@ -1,5 +1,6 @@
 import {
 	ComponentType,
+	InteractionResponseType,
 	MessageFlags,
 	RouteBases,
 	Routes,
@@ -9,16 +10,24 @@ import { Component } from "../structs/Component";
 new Component({
 	id: "select:role",
 	default: true,
-	flags: MessageFlags.Ephemeral,
+	acknowledge: false,
 	run: async (ctx) => {
 		if (!ctx.guildId)
-			return ctx.editReply({
-				content: "Guild not found.",
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Guild not found.",
+					flags: MessageFlags.Ephemeral,
+				},
 			});
 
 		if (!ctx.interaction.member)
-			return ctx.editReply({
-				content: "Member not found.",
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Member not found.",
+					flags: MessageFlags.Ephemeral,
+				},
 			});
 
 		const roleId =
@@ -54,8 +63,12 @@ new Component({
 			},
 		);
 
-		await ctx.editReply({
-			content,
+		return ctx.respond({
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content,
+				flags: MessageFlags.Ephemeral,
+			},
 		});
 	},
 });

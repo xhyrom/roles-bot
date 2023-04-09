@@ -1,6 +1,7 @@
 import {
 	APIWebhook,
 	ButtonStyle,
+	InteractionResponseType,
 	MessageFlags,
 	RouteBases,
 	Routes,
@@ -15,14 +16,18 @@ import { RoleId } from "../types";
 // Part 5 Roles ## add label, placeholder, emoji OR message content
 new Modal({
 	id: "setup:part-roles-lpe",
-	flags: MessageFlags.Ephemeral,
+	acknowledge: false,
 	run: async (ctx) => {
 		const rawData = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
-			return await ctx.editReply({
-				content: "Data not found. Try running setup again.",
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Data not found. Try running setup again.",
+					flags: MessageFlags.Ephemeral,
+				},
 			});
 
 		const data = decodeFromString(rawData);
@@ -60,21 +65,27 @@ new Modal({
 			600,
 		);
 
-		return await ctx.editReply({
-			content:
-				rawRoleIds.length > 0
-					? "Click the button to set the label, placeholder and emoji for next role."
-					: "Click the button to set message content or embed.",
-			components: [
-				new ActionRowBuilder<ButtonBuilder>()
-					.addComponents(
-						new ButtonBuilder()
-							.setLabel(rawRoleIds.length > 0 ? "Next Role" : "Message Content")
-							.setCustomId("setup:part-roles")
-							.setStyle(ButtonStyle.Primary),
-					)
-					.toJSON(),
-			],
+		return ctx.respond({
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content:
+					rawRoleIds.length > 0
+						? "Click the button to set the label, placeholder and emoji for next role."
+						: "Click the button to set message content or embed.",
+				components: [
+					new ActionRowBuilder<ButtonBuilder>()
+						.addComponents(
+							new ButtonBuilder()
+								.setLabel(
+									rawRoleIds.length > 0 ? "Next Role" : "Message Content",
+								)
+								.setCustomId("setup:part-roles")
+								.setStyle(ButtonStyle.Primary),
+						)
+						.toJSON(),
+				],
+				flags: MessageFlags.Ephemeral,
+			},
 		});
 	},
 });
@@ -82,14 +93,18 @@ new Modal({
 // Part 6 Message Content ## select send as webhook/as bot
 new Modal({
 	id: "setup:part-messageContent",
-	flags: MessageFlags.Ephemeral,
+	acknowledge: false,
 	run: async (ctx) => {
 		const rawData = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
-			return await ctx.editReply({
-				content: "Data not found. Try running setup again.",
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Data not found. Try running setup again.",
+					flags: MessageFlags.Ephemeral,
+				},
 			});
 
 		const data = decodeFromString(rawData);
@@ -101,12 +116,14 @@ new Modal({
 		const embedColor = ctx.interaction.data.components[3].components[0].value;
 
 		if (!content && !embedTitle && !embedDescription) {
-			await ctx.editReply({
-				content: "You must provide a message content or embed.",
-				components: [],
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "You must provide a message content or embed.",
+					components: [],
+					flags: MessageFlags.Ephemeral,
+				},
 			});
-
-			return;
 		}
 
 		data.message = { content, embedTitle, embedDescription, embedColor };
@@ -117,23 +134,27 @@ new Modal({
 			600,
 		);
 
-		await ctx.editReply({
-			content:
-				"Choose whether you want to send the message as a webhook or as a bot.",
-			components: [
-				new ActionRowBuilder<ButtonBuilder>()
-					.addComponents(
-						new ButtonBuilder()
-							.setLabel("Webhook")
-							.setCustomId("setup:part-sendAs:webhook")
-							.setStyle(ButtonStyle.Primary),
-						new ButtonBuilder()
-							.setLabel("Bot")
-							.setCustomId("setup:part-sendAs:bot")
-							.setStyle(ButtonStyle.Primary),
-					)
-					.toJSON(),
-			],
+		return ctx.respond({
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content:
+					"Choose whether you want to send the message as a webhook or as a bot.",
+				components: [
+					new ActionRowBuilder<ButtonBuilder>()
+						.addComponents(
+							new ButtonBuilder()
+								.setLabel("Webhook")
+								.setCustomId("setup:part-sendAs:webhook")
+								.setStyle(ButtonStyle.Primary),
+							new ButtonBuilder()
+								.setLabel("Bot")
+								.setCustomId("setup:part-sendAs:bot")
+								.setStyle(ButtonStyle.Primary),
+						)
+						.toJSON(),
+				],
+				flags: MessageFlags.Ephemeral,
+			},
 		});
 	},
 });
@@ -141,14 +162,18 @@ new Modal({
 // Part 8 (ONLY IF WEBHOOK) Webhook ## send webhook
 new Modal({
 	id: "setup:part-webhook",
-	flags: MessageFlags.Ephemeral,
+	acknowledge: false,
 	run: async (ctx) => {
 		const rawData = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
-			return await ctx.editReply({
-				content: "Data not found. Try running setup again.",
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Data not found. Try running setup again.",
+					flags: MessageFlags.Ephemeral,
+				},
 			});
 
 		const data = decodeFromString(rawData);
@@ -180,10 +205,6 @@ new Modal({
 			token: webhook.token,
 		};
 
-		sendFinal(ctx, data);
-
-		await ctx.editReply({
-			content: "Setup completed!",
-		});
+		return sendFinal(ctx, data);
 	},
 });

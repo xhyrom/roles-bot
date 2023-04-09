@@ -58,6 +58,8 @@ export default {
 								flags: command.flags,
 							},
 						});
+				} catch (e) {
+					console.log(e);
 				} finally {
 					if (command.acknowledge)
 						command.run(new CommandContext(interaction, env));
@@ -83,6 +85,8 @@ export default {
 								flags: modal.flags,
 							},
 						});
+				} catch (e) {
+					console.log(e);
 				} finally {
 					if (modal.acknowledge) modal.run(context);
 					// rome-ignore lint/correctness/noUnsafeFinally: it works, must do better typings etc...
@@ -109,6 +113,8 @@ export default {
 								flags: component.flags,
 							},
 						});
+				} catch (e) {
+					console.log(e);
 				} finally {
 					if (component.acknowledge) component.run(context);
 					// rome-ignore lint/correctness/noUnsafeFinally: it works, must do better typings etc...

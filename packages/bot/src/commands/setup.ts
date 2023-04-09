@@ -2,6 +2,7 @@ import { Command } from "../structs/Command";
 import {
 	APIRole,
 	ChannelType,
+	InteractionResponseType,
 	MessageFlags,
 	RouteBases,
 	Routes,
@@ -13,11 +14,14 @@ import { encodeToHex } from "serialize";
 // Part 1 ## select channel
 new Command({
 	name: "setup",
-	flags: MessageFlags.Ephemeral,
+	acknowledge: false,
 	run: async (ctx) => {
 		if (!ctx.guildId)
-			return await ctx.editReply({
-				content: "Guild not found.",
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Guild not found.",
+				},
 			});
 
 		// Delete the data if it exists
@@ -42,20 +46,24 @@ new Command({
 			3600,
 		);
 
-		await ctx.editReply({
-			content: "Select the channel to which the panel will be sent.",
-			components: [
-				new ActionRowBuilder<ChannelSelectMenuBuilder>()
-					.addComponents(
-						new ChannelSelectMenuBuilder()
-							.setCustomId("setup:part-channel")
-							.addChannelTypes(
-								ChannelType.GuildAnnouncement,
-								ChannelType.GuildText,
-							),
-					)
-					.toJSON(),
-			],
+		return ctx.respond({
+			type: InteractionResponseType.ChannelMessageWithSource,
+			data: {
+				content: "Select the channel to which the panel will be sent.",
+				components: [
+					new ActionRowBuilder<ChannelSelectMenuBuilder>()
+						.addComponents(
+							new ChannelSelectMenuBuilder()
+								.setCustomId("setup:part-channel")
+								.addChannelTypes(
+									ChannelType.GuildAnnouncement,
+									ChannelType.GuildText,
+								),
+						)
+						.toJSON(),
+				],
+				flags: MessageFlags.Ephemeral,
+			},
 		});
 	},
 });

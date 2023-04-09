@@ -3,6 +3,8 @@ import {
 	APIEmbed,
 	APIMessageActionRowComponent,
 	ButtonStyle,
+	InteractionResponseType,
+	MessageFlags,
 	RouteBases,
 	Routes,
 } from "discord-api-types/v10";
@@ -127,12 +129,22 @@ export default async function (ctx: Context, data: Data) {
 
 			if (!res.ok) {
 				const json: { message: string; code: string } = await res.json();
-				await ctx.editReply({
-					content: `Error: ${json.message} (${json.code})`,
+				return ctx.respond({
+					type: InteractionResponseType.ChannelMessageWithSource,
+					data: {
+						content: `Error: ${json.message} (${json.code})`,
+						flags: MessageFlags.Ephemeral,
+					},
 				});
 			}
 
-			break;
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Done!",
+					flags: MessageFlags.Ephemeral,
+				},
+			});
 		}
 		case "webhook": {
 			const res = await fetch(
@@ -153,22 +165,34 @@ export default async function (ctx: Context, data: Data) {
 				},
 			);
 
+			await fetch(
+				`${RouteBases.api}${Routes.webhook(
+					data.webhook.id,
+					data.webhook.token,
+				)}`,
+				{
+					method: "DELETE",
+				},
+			);
+
 			if (!res.ok) {
 				const json: { message: string; code: string } = await res.json();
-				await ctx.editReply({
-					content: `Error: ${json.message} (${json.code})`,
-				});
-			} else {
-				await fetch(
-					`${RouteBases.api}${Routes.webhook(
-						data.webhook.id,
-						data.webhook.token,
-					)}`,
-					{
-						method: "DELETE",
+				return ctx.respond({
+					type: InteractionResponseType.ChannelMessageWithSource,
+					data: {
+						content: `Error: ${json.message} (${json.code})`,
+						flags: MessageFlags.Ephemeral,
 					},
-				);
+				});
 			}
+
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "Done!",
+					flags: MessageFlags.Ephemeral,
+				},
+			});
 		}
 	}
 }
