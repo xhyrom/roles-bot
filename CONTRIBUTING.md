@@ -31,7 +31,7 @@ The `footer` is optional. The [Commit Message Footer](#commit-footer) format des
   │       │      │
   │       │      └─⫸ Exclamation mark: breaking change
   │       │
-  │       └─⫸ Commit Scope: bot|website
+  │       └─⫸ Commit Scope: bot|website|serialize|redis-api|redis-api-client|builders
   │
   └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
 ```
@@ -60,6 +60,10 @@ The following is the list of supported scopes:
 
 - `bot`
 - `website`
+- `serialize`
+- `redis-api`
+- `redis-api-client`
+- `builders`
 
 There are currently a few exceptions to the "use package name" rule:
 
