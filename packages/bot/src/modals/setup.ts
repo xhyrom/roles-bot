@@ -1,16 +1,21 @@
 import {
+	APIWebhook,
 	ButtonStyle,
-	InteractionResponseType,
 	MessageFlags,
+	RouteBases,
+	Routes,
 } from "discord-api-types/v10";
 import { Modal } from "../structs/Modal";
 import { ActionRowBuilder, ButtonBuilder } from "builders";
 import { encodeToHex, decodeFromString } from "serialize";
 import { REDIS } from "../things";
+import sendFinal from "../utils/sendFinal";
+import { RoleId } from "../types";
 
 // Part 5 Roles ## add label, placeholder, emoji OR message content
 new Modal({
 	id: "setup:part-roles-lpe",
+	flags: MessageFlags.Ephemeral,
 	run: async (ctx) => {
 		const rawData = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
@@ -22,17 +27,28 @@ new Modal({
 
 		const data = decodeFromString(rawData);
 		const rawRoleIds = data.rawRoleIds as string[];
-		const roleIds = (data.roleIds ?? []) as {
-			label: string;
-			placeholder: string;
-			emoji: string;
-		}[];
+		const roleIds = (data.roleIds ?? []) as RoleId[];
 
 		const label = ctx.interaction.data.components[0].components[0].value;
-		const placeholder = ctx.interaction.data.components[1].components[0].value;
-		const emoji = ctx.interaction.data.components[2].components[0].value;
+		const emoji = ctx.interaction.data.components[1].components[0].value;
 
-		roleIds.push({ label, placeholder, emoji });
+		switch (data.selecting) {
+			case "buttons": {
+				const style = ctx.interaction.data.components[2].components[0].value;
+
+				roleIds.push({ label, style, emoji, id: rawRoleIds[0] });
+
+				break;
+			}
+			case "dropdowns": {
+				const description =
+					ctx.interaction.data.components[2].components[0].value;
+
+				roleIds.push({ label, description, emoji, id: rawRoleIds[0] });
+
+				break;
+			}
+		}
 
 		rawRoleIds.shift();
 		data.rawRoleIds = rawRoleIds;
@@ -118,6 +134,56 @@ new Modal({
 					)
 					.toJSON(),
 			],
+		});
+	},
+});
+
+// Part 8 (ONLY IF WEBHOOK) Webhook ## send webhook
+new Modal({
+	id: "setup:part-webhook",
+	flags: MessageFlags.Ephemeral,
+	run: async (ctx) => {
+		const rawData = await REDIS.get(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+		);
+		if (!rawData)
+			return await ctx.editReply({
+				content: "Data not found. Try running setup again.",
+			});
+
+		const data = decodeFromString(rawData);
+
+		const webhookName = ctx.interaction.data.components[0].components[0].value;
+		const webhookAvatarUrl =
+			ctx.interaction.data.components[1].components[0].value;
+
+		const webhook = (await (
+			await fetch(
+				`${RouteBases.api}${Routes.channelWebhooks(data.channelId)}`,
+				{
+					method: "POST",
+					headers: {
+						Authorization: `Bot ${ctx.env.token}`,
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						name: "Roles Bot Webhook",
+					}),
+				},
+			)
+		).json()) as APIWebhook;
+
+		data.webhook = {
+			name: webhookName,
+			avatarUrl: webhookAvatarUrl,
+			id: webhook.id,
+			token: webhook.token,
+		};
+
+		sendFinal(ctx, data);
+
+		await ctx.editReply({
+			content: "Setup completed!",
 		});
 	},
 });

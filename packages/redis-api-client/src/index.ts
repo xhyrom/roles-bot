@@ -7,7 +7,7 @@ export class RedisAPIClient {
 		this.host = host;
 	}
 
-	public async get(key: string): Promise<string> {
+	public async get(key: string): Promise<string | null> {
 		const url = `${this.host}/get?key=${key}`;
 		const response = await fetch(url, {
 			headers: {
@@ -15,7 +15,8 @@ export class RedisAPIClient {
 			},
 		});
 
-		return response.text();
+		const text = await response.text();
+		return text === "null" ? null : text;
 	}
 
 	public async set(key: string, value: string): Promise<string> {
@@ -60,6 +61,7 @@ export class RedisAPIClient {
 	public async del(key: string): Promise<string> {
 		const url = `${this.host}/del?key=${key}`;
 		const response = await fetch(url, {
+			method: "DELETE",
 			headers: {
 				Authorization: this.apiKey,
 			},

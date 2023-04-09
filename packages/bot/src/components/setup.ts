@@ -15,6 +15,7 @@ import {
 import returnRoleLpe from "../utils/returnRoleLpe";
 import { REDIS } from "../things";
 import { encodeToHex, decodeFromString } from "serialize";
+import sendFinal from "../utils/sendFinal";
 
 // Part 2 Channels ## select button/dropdowns
 new Component({
@@ -137,7 +138,7 @@ new Component({
 		);
 
 		return rawRoleIds.length > 0
-			? returnRoleLpe(ctx, rawRoleIds[0])
+			? returnRoleLpe(data, ctx, rawRoleIds[0])
 			: ctx.returnModal({
 					title: "Message Preview",
 					custom_id: "setup:part-messageContent",
@@ -191,17 +192,15 @@ new Component({
 	},
 });
 
-// Part 7 Send As ## finish
+// Part 7 Send As ## finish or open modal for webhook preview
 new Component({
 	id: "setup:part-sendAs",
 	acknowledge: false,
 	run: async (ctx) => {
-		if (!ctx.interaction.guild_id)
+		if (!ctx.guildId)
 			return await ctx.editReply({ content: "Guild not found." });
 
-		const rawData = await REDIS.get(
-			`roles-bot-setup:${ctx.interaction.guild_id}`,
-		);
+		const rawData = await REDIS.get(`roles-bot-setup:${ctx.guildId}`);
 		if (!rawData)
 			return ctx.respond({
 				type: InteractionResponseType.ChannelMessageWithSource,
@@ -212,29 +211,58 @@ new Component({
 			});
 
 		const data = decodeFromString(rawData);
-		console.log(data);
+		const sendAs = ctx.interaction.data.custom_id.split(":")[2];
+		data.sendAs = sendAs;
 
-		// delete data
-		await REDIS.del(`roles-bot-setup:${ctx.guildId}`);
+		await REDIS.setex(
+			`roles-bot-setup:${ctx.interaction.guild_id}`,
+			encodeToHex(data),
+			600,
+		);
 
-		// TODO: finish sending
-		const actionRow = new ActionRowBuilder();
-
-		/*switch (selecting) {
-			case "buttons": {
-				// TOOD: finish
+		switch (sendAs) {
+			case "webhook": {
+				return ctx.returnModal({
+					title: "Webhook Preview",
+					custom_id: "setup:part-webhook",
+					components: [
+						new ActionRowBuilder<TextInputBuilder>()
+							.addComponents(
+								new TextInputBuilder()
+									.setLabel("Webhook Name")
+									.setCustomId("name")
+									.setPlaceholder("Roles Bot")
+									.setStyle(TextInputStyle.Short)
+									.setMaxLength(80)
+									.setRequired(true),
+							)
+							.toJSON(),
+						new ActionRowBuilder<TextInputBuilder>()
+							.addComponents(
+								new TextInputBuilder()
+									.setLabel("Webhook Avatar URL")
+									.setCustomId("avatarUrl")
+									.setPlaceholder(
+										"https://raw.githubusercontent.com/Hyro-Blobs/blobs/main/base/hyro_blob-upscaled.png",
+									)
+									.setStyle(TextInputStyle.Short)
+									.setRequired(false),
+							)
+							.toJSON(),
+					],
+				});
 			}
-			case "dropdowns": {
-				// TODO: finish
-			}
-		}*/
+			case "bot": {
+				sendFinal(ctx, data);
 
-		return ctx.respond({
-			type: InteractionResponseType.ChannelMessageWithSource,
-			data: {
-				content: "Done!",
-				flags: MessageFlags.Ephemeral,
-			},
-		});
+				return ctx.respond({
+					type: InteractionResponseType.ChannelMessageWithSource,
+					data: {
+						content: "Setup completed!",
+						flags: MessageFlags.Ephemeral,
+					},
+				});
+			}
+		}
 	},
 });

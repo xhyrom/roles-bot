@@ -1,5 +1,6 @@
 import "./commands/setup";
 import "./components/setup";
+import "./components/select";
 import "./modals/setup";
 
 import {
@@ -92,9 +93,10 @@ export default {
 			}
 			case InteractionType.MessageComponent: {
 				const context = new ComponentContext(interaction, env);
-				const component = COMPONENTS.find((cmp) =>
-					context.interaction.data.custom_id.startsWith(cmp.id),
-				);
+				const component =
+					COMPONENTS.find((cmp) =>
+						context.interaction.data.custom_id.startsWith(cmp.id),
+					) ?? COMPONENTS.find((cmp) => cmp.default);
 
 				if (!component)
 					return new Response("Unknown component", { status: 404 });

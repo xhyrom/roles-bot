@@ -192,6 +192,8 @@
    limitations under the License.
  */
 
+export * from "./messages/embed/Embed.js";
+
 export * from "./components/ActionRow";
 export * from "./components/button/Button";
 export * from "./components/Component";

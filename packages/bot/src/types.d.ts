@@ -21,3 +21,23 @@ declare interface Env {
 	redisApiClientKey: string;
 	redisApiClientHost: string;
 }
+
+declare interface RoleId {
+	label: string;
+	description?: string;
+	emoji: string;
+	id: string;
+	style?: string;
+}
+
+declare interface BasicData {
+	channelId: string;
+	selecting: "buttons" | "dropdowns";
+	roleIds: RoleId[];
+	message: {
+		content: string;
+		embedTitle: string;
+		embedDescription: string;
+		embedColor: string;
+	};
+}

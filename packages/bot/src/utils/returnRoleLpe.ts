@@ -8,8 +8,9 @@ import {
 } from "discord-api-types/v10";
 import { REDIS } from "../things";
 import { decodeFromString } from "serialize";
+import { BasicData } from "../types";
 
-export default async function (ctx: Context, rawRole: string) {
+export default async function (data: BasicData, ctx: Context, rawRole: string) {
 	const rolesRaw = await REDIS.get(`roles-bot-setup-roles:${ctx.guildId}`);
 	if (!rolesRaw)
 		return ctx.respond({
@@ -25,40 +26,65 @@ export default async function (ctx: Context, rawRole: string) {
 
 	const roleName = roles?.find((r) => r.id === rawRole)?.name;
 
+	const components = [
+		new ActionRowBuilder<TextInputBuilder>()
+			.addComponents(
+				new TextInputBuilder()
+					.setLabel("Label")
+					.setCustomId("label")
+					.setPlaceholder("Ping")
+					.setStyle(TextInputStyle.Short)
+					.setRequired(true),
+			)
+			.toJSON(),
+		new ActionRowBuilder<TextInputBuilder>()
+			.addComponents(
+				new TextInputBuilder()
+					.setLabel("Emoji")
+					.setCustomId("emoji")
+					.setPlaceholder("emoji 💡")
+					.setStyle(TextInputStyle.Short)
+					.setRequired(false),
+			)
+			.toJSON(),
+	];
+
+	switch (data.selecting) {
+		case "buttons": {
+			components.push(
+				new ActionRowBuilder<TextInputBuilder>()
+					.addComponents(
+						new TextInputBuilder()
+							.setLabel("Style")
+							.setCustomId("style")
+							.setPlaceholder("Primary, Secondary, Success or Danger")
+							.setStyle(TextInputStyle.Short)
+							.setRequired(true),
+					)
+					.toJSON(),
+			);
+
+			break;
+		}
+		case "dropdowns": {
+			components.push(
+				new ActionRowBuilder<TextInputBuilder>()
+					.addComponents(
+						new TextInputBuilder()
+							.setLabel("Description")
+							.setCustomId("description")
+							.setPlaceholder("pingping pong pong")
+							.setStyle(TextInputStyle.Short)
+							.setRequired(false),
+					)
+					.toJSON(),
+			);
+		}
+	}
+
 	return ctx.returnModal({
 		title: `${roleName?.slice(0, 39)} Role`,
 		custom_id: "setup:part-roles-lpe",
-		components: [
-			new ActionRowBuilder<TextInputBuilder>()
-				.addComponents(
-					new TextInputBuilder()
-						.setLabel("Label")
-						.setCustomId("label")
-						.setPlaceholder("Ping")
-						.setStyle(TextInputStyle.Short)
-						.setRequired(false),
-				)
-				.toJSON(),
-			new ActionRowBuilder<TextInputBuilder>()
-				.addComponents(
-					new TextInputBuilder()
-						.setLabel("Placeholder")
-						.setCustomId("placeholder")
-						.setPlaceholder("pingping pong pong")
-						.setStyle(TextInputStyle.Short)
-						.setRequired(false),
-				)
-				.toJSON(),
-			new ActionRowBuilder<TextInputBuilder>()
-				.addComponents(
-					new TextInputBuilder()
-						.setLabel("Emoji")
-						.setCustomId("emoji")
-						.setPlaceholder("emoji 💡")
-						.setStyle(TextInputStyle.Short)
-						.setRequired(false),
-				)
-				.toJSON(),
-		],
+		components,
 	});
 }
