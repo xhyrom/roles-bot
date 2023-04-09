@@ -15,7 +15,7 @@
       "outputs": ["dist"]
     },
     "deploy": {
-      "dependsOn": ["build", "test", "lint"]
+      "dependsOn": ["build"]
     },
     "start": {},
     "test": {
