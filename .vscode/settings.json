@@ -1,10 +1,11 @@
 {
-    "liveServer.settings.port": 5501,
-    "liveSassCompile.settings.formats": [
-        {
-            "format": "expanded",
-            "extensionName": ".css",
-            "savePath": "/packages/website/styles/css"
-        }
-    ]
+	"[typescript]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "rome.rome"
+	},
+	"[astro]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }

@@ -1,0 +1,46 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Invite from "~/components/Invite.astro";
+import Computer from "~/components/Computer.astro";
+---
+
+<Layout>
+  <main class="flex h-screen items-center justify-center text-center">
+    <div
+      class="flex flex-col items-center px-4 text-center md:flex-row md:text-left"
+    >
+      <img
+        src="https://raw.githubusercontent.com/Hyro-Blobs/blobs/main/other/hyro_santa_bucket.png"
+        alt=""
+        class="mb-6 h-48 w-48 rounded-full md:h-64 md:w-64"
+      />
+      <div>
+        <h1 class="mb-4 text-6xl font-extrabold text-white md:text-7xl">
+          Roles Bot
+        </h1>
+        <p class="max-w-3xl text-lg text-gray-300 md:text-xl">
+          Ultimate solution for managing reaction roles in your Discord server,
+          and the best part is, it's completely <strong>free</strong>! No hidden
+          charges or payments like other bots. Try it out today and see for
+          yourself how <strong>easy</strong> it is to use!
+        </p>
+        <div class="mt-6 flex flex-col gap-6 md:flex-row">
+          <a
+            href=""
+            class="broder-1 flex items-center justify-center gap-x-3 rounded-lg border border-[#4e59d6] bg-[#373a54]/50 px-10 py-3 text-lg font-semibold text-white transition-colors hover:bg-[#373a54]"
+          >
+            <Computer />
+            GitHub</a
+          >
+          <a
+            href=""
+            class="broder-1 flex items-center justify-center gap-x-3 rounded-lg border border-[#fbc11a] bg-[#735d1d]/50 px-10 py-3 text-lg font-semibold text-white transition-colors hover:bg-[#735d1d]"
+          >
+            <Invite />
+            Invite</a
+          >
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

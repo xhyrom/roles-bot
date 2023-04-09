@@ -1,0 +1,14 @@
+{
+  "name": "redis-api-client",
+  "version": "0.0.1",
+  "author": "xHyroM",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "node scripts/build.mjs && tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.11",
+    "typescript": "^4.8.4"
+  }
+}
