@@ -1,4 +1,5 @@
 import "./commands/setup";
+import "./commands/info";
 import "./components/setup";
 import "./components/select";
 import "./modals/setup";
