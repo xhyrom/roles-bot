@@ -36,6 +36,7 @@ new Modal({
 
 		rawRoleIds.shift();
 		data.rawRoleIds = rawRoleIds;
+		data.roleIds = roleIds;
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
