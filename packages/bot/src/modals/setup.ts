@@ -2,10 +2,9 @@ import {
 	ButtonStyle,
 	InteractionResponseType,
 	MessageFlags,
-	TextInputStyle,
 } from "discord-api-types/v10";
 import { Modal } from "../structs/Modal";
-import { ActionRowBuilder, ButtonBuilder, TextInputBuilder } from "builders";
+import { ActionRowBuilder, ButtonBuilder } from "builders";
 import { serializers } from "serialize";
 
 // Part 5 Roles ## add label, placeholder, emoji OR message content
@@ -72,6 +71,8 @@ new Modal({
 			ctx.interaction.data.components[2].components[0].value;
 		const embedColor = ctx.interaction.data.components[3].components[0].value;
 
+		console.log("asd");
+
 		if (!content && !embedTitle && !embedDescription) {
 			await ctx.editReply({
 				content: "You must provide a message content or embed.",
@@ -86,7 +87,9 @@ new Modal({
 			message: { content, embedTitle, embedDescription, embedColor },
 		};
 
-		await ctx.editReply({
+		console.log("edit");
+
+		const o = await ctx.editReply({
 			content:
 				"Choose whether you want to send the message as a webhook or as a bot.",
 			components: [
@@ -120,5 +123,7 @@ new Modal({
 					.toJSON(),
 			],
 		});
+
+		console.log(data);
 	},
 });
