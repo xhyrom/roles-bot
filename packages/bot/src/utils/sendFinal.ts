@@ -115,17 +115,35 @@ export default async function (ctx: Context, data: Data) {
 
 	switch (data.sendAs) {
 		case "bot": {
-			const res = await fetch(
-				`${RouteBases.api}${Routes.channelMessages(data.channelId)}`,
-				{
-					method: "POST",
-					headers: {
-						Authorization: `Bot ${ctx.env.token}`,
-						"Content-Type": "application/json",
+			let res;
+			if (data.originalMessageId) {
+				res = await fetch(
+					`${RouteBases.api}${Routes.channelMessage(
+						data.channelId,
+						data.originalMessageId,
+					)}`,
+					{
+						method: "PATCH",
+						headers: {
+							Authorization: `Bot ${ctx.env.token}`,
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(payload),
 					},
-					body: JSON.stringify(payload),
-				},
-			);
+				);
+			} else {
+				res = await fetch(
+					`${RouteBases.api}${Routes.channelMessages(data.channelId)}`,
+					{
+						method: "POST",
+						headers: {
+							Authorization: `Bot ${ctx.env.token}`,
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(payload),
+					},
+				);
+			}
 
 			if (!res.ok) {
 				const json: { message: string; code: string } = await res.json();

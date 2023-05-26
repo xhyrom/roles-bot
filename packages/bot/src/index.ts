@@ -1,11 +1,13 @@
 import "./commands/setup";
 import "./commands/info";
+import "./commands/edit_message";
 import "./components/setup";
 import "./components/select";
 import "./modals/setup";
 
 import {
 	APIApplicationCommandInteraction,
+	APIMessageApplicationCommandInteraction,
 	APIMessageComponentInteraction,
 	APIModalSubmitInteraction,
 	APIPingInteraction,
@@ -35,6 +37,7 @@ export default {
 		const interaction = (await request.json()) as
 			| APIPingInteraction
 			| APIApplicationCommandInteraction
+			| APIMessageApplicationCommandInteraction
 			| APIModalSubmitInteraction
 			| APIMessageComponentInteraction;
 

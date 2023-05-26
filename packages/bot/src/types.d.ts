@@ -18,6 +18,7 @@ declare type DeclaredId = Record<
 declare interface Env {
 	publicKey: string;
 	token: string;
+	applicationId: string;
 	redisApiClientKey: string;
 	redisApiClientHost: string;
 }
@@ -32,6 +33,7 @@ declare interface RoleId {
 
 declare interface BasicData {
 	channelId: string;
+	originalMessageId?: string | null;
 	selecting: "buttons" | "dropdowns";
 	roleIds: RoleId[];
 	message: {

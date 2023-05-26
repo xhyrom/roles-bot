@@ -128,6 +128,10 @@ new Modal({
 
 		data.message = { content, embedTitle, embedDescription, embedColor };
 
+		if (data.originalMessageId) {
+			return sendFinal(ctx, data);
+		}
+
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 			encodeToHex(data),
