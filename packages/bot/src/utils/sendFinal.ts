@@ -65,7 +65,7 @@ export default async function (ctx: Context, data: Data) {
 	}
 
 	const components: APIActionRowComponent<APIMessageActionRowComponent>[] = [];
-	const array = splitArray(data.roleIds, 25);
+	const array = splitArray(data.roleIds, data.selecting === "buttons" ? 5 : 25);
 	for (const items of array) {
 		const actionRow = new ActionRowBuilder();
 
