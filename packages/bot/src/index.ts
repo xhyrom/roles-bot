@@ -21,10 +21,11 @@ import { CommandContext } from "./structs/contexts/CommandContext";
 import { ComponentContext } from "./structs/contexts/ComponentContext";
 import { ModalContext } from "./structs/contexts/ModalContext";
 import { Env } from "./types";
+import { Redis } from "@upstash/redis/cloudflare";
 
 export default {
 	fetch: async (request: Request, env: Env) => {
-		if (!REDIS) setRedis(env.redisApiClientKey, env.redisApiClientHost);
+		if (!REDIS) setRedis(Redis.fromEnv(env));
 
 		if (
 			!request.headers.get("X-Signature-Ed25519") ||

@@ -39,8 +39,8 @@ new Component({
 
 		await REDIS.setex(
 			`roles-bot-setup:${interaction.guild_id}`,
-			encodeToHex(data),
 			600,
+			encodeToHex(data),
 		);
 
 		return ctx.respond({
@@ -99,8 +99,8 @@ new Component({
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
-			encodeToHex(data),
 			600,
+			encodeToHex(data),
 		);
 
 		return ctx.respond({
@@ -160,8 +160,8 @@ new Component({
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
-			encodeToHex(data),
 			600,
+			encodeToHex(data),
 		);
 
 		return rawRoleIds.length > 0
@@ -249,8 +249,8 @@ new Component({
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
-			encodeToHex(data),
 			600,
+			encodeToHex(data),
 		);
 
 		switch (sendAs) {

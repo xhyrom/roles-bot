@@ -44,12 +44,12 @@ new Command({
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.guildId}`,
+			600,
 			encodeToHex({
 				channelId: message.channel_id,
 				originalMessageId: message.id,
 				sendAs: "bot",
 			}),
-			600,
 		);
 
 		const roles = (await (
@@ -62,13 +62,13 @@ new Command({
 
 		await REDIS.setex(
 			`roles-bot-setup-roles:${ctx.guildId}`,
+			3600,
 			encodeToHex(
 				roles.map((r) => ({
 					id: r.id,
 					name: r.name,
 				})),
 			),
-			3600,
 		);
 
 		return ctx.respond({

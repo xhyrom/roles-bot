@@ -19,8 +19,8 @@ declare interface Env {
 	publicKey: string;
 	token: string;
 	applicationId: string;
-	redisApiClientKey: string;
-	redisApiClientHost: string;
+	UPSTASH_REDIS_REST_TOKEN: string;
+	UPSTASH_REDIS_REST_URL: string;
 }
 
 declare interface RoleId {

@@ -37,13 +37,13 @@ new Command({
 
 		await REDIS.setex(
 			`roles-bot-setup-roles:${ctx.guildId}`,
+			3600,
 			encodeToHex(
 				roles.map((r) => ({
 					id: r.id,
 					name: r.name,
 				})),
 			),
-			3600,
 		);
 
 		return ctx.respond({

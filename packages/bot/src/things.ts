@@ -1,15 +1,15 @@
-import { RedisAPIClient } from "redis-api-client";
 import { Command } from "./structs/Command";
 import { Component } from "./structs/Component";
 import { Modal } from "./structs/Modal";
+import type { Redis } from "@upstash/redis/cloudflare";
 
 export const COMMANDS: Command[] = [];
 export const COMPONENTS: Component[] = [];
 export const MODALS: Modal[] = [];
-export let REDIS: RedisAPIClient;
+export let REDIS: Redis;
 
-export const setRedis = (apiKey: string, host: string) => {
-	REDIS = new RedisAPIClient(apiKey, host);
+export const setRedis = (redis: Redis) => {
+	REDIS = redis;
 };
 
 export const registerCommand = (command: Command) => {

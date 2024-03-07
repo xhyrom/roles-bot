@@ -61,8 +61,8 @@ new Modal({
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
-			encodeToHex(data),
 			600,
+			encodeToHex(data),
 		);
 
 		return ctx.respond({
@@ -134,8 +134,8 @@ new Modal({
 
 		await REDIS.setex(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
-			encodeToHex(data),
 			600,
+			encodeToHex(data),
 		);
 
 		return ctx.respond({
