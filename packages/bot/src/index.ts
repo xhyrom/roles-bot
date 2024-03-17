@@ -27,6 +27,10 @@ export default {
 	fetch: async (request: Request, env: Env) => {
 		if (!REDIS) setRedis(Redis.fromEnv(env));
 
+		if (new URL(request.url).pathname === "/ping") {
+			return new Response("Pong!", { status: 200 });
+		}
+
 		if (
 			!request.headers.get("X-Signature-Ed25519") ||
 			!request.headers.get("X-Signature-Timestamp")
