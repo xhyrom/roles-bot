@@ -11,7 +11,9 @@ import { decodeFromString } from "serialize";
 import { BasicData } from "../types";
 
 export default async function (data: BasicData, ctx: Context, rawRole: string) {
-	const rolesRaw = await REDIS.get(`roles-bot-setup-roles:${ctx.guildId}`);
+	const rolesRaw: string | null = await REDIS.get(
+		`roles-bot-setup-roles:${ctx.guildId}`,
+	);
 	if (!rolesRaw)
 		return ctx.respond({
 			type: InteractionResponseType.ChannelMessageWithSource,

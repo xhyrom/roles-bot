@@ -41,6 +41,16 @@ new Component({
 				: // support for legacy select menus
 				  ctx.interaction.data.custom_id;
 
+		if (roleId === "nothing") {
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: "No role selected.",
+					flags: MessageFlags.Ephemeral,
+				},
+			});
+		}
+
 		const content = !ctx.interaction.member?.roles.includes(roleId)
 			? `Gave the <@&${roleId}> role!`
 			: `Removed the <@&${roleId}> role!`;

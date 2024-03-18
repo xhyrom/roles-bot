@@ -18,7 +18,7 @@ new Modal({
 	id: "setup:part-roles-lpe",
 	acknowledge: false,
 	run: async (ctx) => {
-		const rawData = await REDIS.get(
+		const rawData: string | null = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
@@ -95,7 +95,7 @@ new Modal({
 	id: "setup:part-messageContent",
 	acknowledge: false,
 	run: async (ctx) => {
-		const rawData = await REDIS.get(
+		const rawData: string | null = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
@@ -168,7 +168,7 @@ new Modal({
 	id: "setup:part-webhook",
 	acknowledge: false,
 	run: async (ctx) => {
-		const rawData = await REDIS.get(
+		const rawData: string | null = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)

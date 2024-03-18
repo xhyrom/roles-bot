@@ -2,7 +2,6 @@ import {
 	APIActionRowComponent,
 	APIEmbed,
 	APIMessageActionRowComponent,
-	ButtonStyle,
 	InteractionResponseType,
 	MessageFlags,
 	RouteBases,
@@ -65,11 +64,18 @@ export default async function (ctx: Context, data: Data) {
 	}
 
 	const components: APIActionRowComponent<APIMessageActionRowComponent>[] = [];
-	const array = splitArray(data.roleIds, data.selecting === "buttons" ? 5 : 25);
+	const array = splitArray(data.roleIds, data.selecting === "buttons" ? 5 : 24);
 	for (const items of array) {
 		const actionRow = new ActionRowBuilder();
 
-		const selectMenu = new StringSelectMenuBuilder().setCustomId("select:role");
+		const selectMenuNaiveOption = new StringSelectMenuOptionBuilder()
+			.setLabel("Make a choice")
+			.setValue("nothing")
+			.setDefault(true);
+
+		const selectMenu = new StringSelectMenuBuilder()
+			.setCustomId("select:role")
+			.addOptions(selectMenuNaiveOption);
 
 		for (const item of items) {
 			switch (data.selecting) {

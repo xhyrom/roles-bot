@@ -1,7 +1,5 @@
 // from https://gist.github.com/devsnek/77275f6e3f810a9545440931ed314dc1
 
-"use strict";
-
 import type { Env } from "../types";
 
 function hex2bin(hex: string) {
@@ -14,13 +12,18 @@ function hex2bin(hex: string) {
 
 const encoder = new TextEncoder();
 
+export function getAlgorithm() {
+	// @ts-expect-error
+	return typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519";
+}
+
 export async function verify(request: Request, env: Env) {
 	const subtle = await crypto.subtle.importKey(
 		"raw",
 		hex2bin(env.publicKey),
 		{
-			name: typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519",
-			namedCurve: typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519",
+			name: getAlgorithm(),
+			namedCurve: getAlgorithm(),
 		},
 		true,
 		["verify"],
@@ -32,7 +35,7 @@ export async function verify(request: Request, env: Env) {
 	const unknown = await request.clone().text();
 
 	return await crypto.subtle.verify(
-		typeof MINIFLARE !== "undefined" ? "Ed25519" : "NODE-ED25519",
+		getAlgorithm(),
 		subtle,
 		signature,
 		encoder.encode(timestamp + unknown),

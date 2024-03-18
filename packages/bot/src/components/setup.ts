@@ -82,7 +82,7 @@ new Component({
 				},
 			});
 
-		const rawData = await REDIS.get(
+		const rawData: string | null = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
@@ -141,7 +141,7 @@ new Component({
 		const interaction =
 			ctx.interaction as APIMessageComponentSelectMenuInteraction;
 
-		const rawData = await REDIS.get(
+		const rawData: string | null = await REDIS.get(
 			`roles-bot-setup:${ctx.interaction.guild_id}`,
 		);
 		if (!rawData)
@@ -233,7 +233,9 @@ new Component({
 				},
 			});
 
-		const rawData = await REDIS.get(`roles-bot-setup:${ctx.guildId}`);
+		const rawData: string | null = await REDIS.get(
+			`roles-bot-setup:${ctx.guildId}`,
+		);
 		if (!rawData)
 			return ctx.respond({
 				type: InteractionResponseType.ChannelMessageWithSource,
