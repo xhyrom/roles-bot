@@ -34,6 +34,7 @@ export default async function (data: BasicData, ctx: Context, rawRole: string) {
 				new TextInputBuilder()
 					.setLabel("Label")
 					.setCustomId("label")
+					.setMaxLength(data.selecting === "buttons" ? 80 : 100)
 					.setPlaceholder("Ping")
 					.setStyle(TextInputStyle.Short)
 					.setRequired(true),
@@ -75,6 +76,7 @@ export default async function (data: BasicData, ctx: Context, rawRole: string) {
 						new TextInputBuilder()
 							.setLabel("Description")
 							.setCustomId("description")
+							.setMaxLength(100)
 							.setPlaceholder("pingping pong pong")
 							.setStyle(TextInputStyle.Short)
 							.setRequired(false),

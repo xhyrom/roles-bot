@@ -21,6 +21,7 @@ import splitArray from "./splitArray";
 import { resolvePartialEmoji } from "./resolveEmoji";
 import { BasicData } from "../types";
 import resolveButtonStyle from "./resolveButtonStyle";
+import { parseErrors } from "./errors";
 
 type DataBot = BasicData & {
 	sendAs: "bot";
@@ -66,7 +67,9 @@ export default async function (ctx: Context, data: Data) {
 	const components: APIActionRowComponent<APIMessageActionRowComponent>[] = [];
 	const array = splitArray(data.roleIds, data.selecting === "buttons" ? 5 : 24);
 	for (const items of array) {
-		const actionRow = new ActionRowBuilder();
+		const actionRow = new ActionRowBuilder<
+			ButtonBuilder | StringSelectMenuBuilder
+		>();
 
 		const selectMenuNaiveOption = new StringSelectMenuOptionBuilder()
 			.setLabel("Make a choice")
@@ -113,8 +116,7 @@ export default async function (ctx: Context, data: Data) {
 
 		if (data.selecting === "dropdowns") actionRow.addComponents(selectMenu);
 
-		// @ts-expect-error i know i know
-		components.push(actionRow);
+		components.push(actionRow.toJSON());
 	}
 
 	payload.components = components;
@@ -152,11 +154,23 @@ export default async function (ctx: Context, data: Data) {
 			}
 
 			if (!res.ok) {
-				const json: { message: string; code: string } = await res.json();
+				const json: {
+					message: string;
+					code: string;
+					errors: Record<string, unknown>;
+				} = await res.json();
+				const errors = parseErrors(json?.errors ?? {});
+
 				return ctx.respond({
 					type: InteractionResponseType.ChannelMessageWithSource,
 					data: {
-						content: `Error: ${json.message} (${json.code})`,
+						content: `Error: ${json.message} (${json.code})${
+							errors.length > 0
+								? `\n${errors
+										.map((e) => ` - ${e.message} (${e.code})`)
+										.join("\n")}`
+								: ""
+						}`,
 						flags: MessageFlags.Ephemeral,
 					},
 				});
@@ -200,11 +214,23 @@ export default async function (ctx: Context, data: Data) {
 			);
 
 			if (!res.ok) {
-				const json: { message: string; code: string } = await res.json();
+				const json: {
+					message: string;
+					code: string;
+					errors: Record<string, unknown>;
+				} = await res.json();
+				const errors = parseErrors(json?.errors ?? {});
+
 				return ctx.respond({
 					type: InteractionResponseType.ChannelMessageWithSource,
 					data: {
-						content: `Error: ${json.message} (${json.code})`,
+						content: `Error: ${json.message} (${json.code})${
+							errors.length > 0
+								? `\n${errors
+										.map((e) => ` - ${e.message} (${e.code})`)
+										.join("\n")}`
+								: ""
+						}`,
 						flags: MessageFlags.Ephemeral,
 					},
 				});
