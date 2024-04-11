@@ -161,19 +161,25 @@ export default async function (ctx: Context, data: Data) {
 				} = await res.json();
 				const errors = parseErrors(json?.errors ?? {});
 
-				return ctx.respond({
-					type: InteractionResponseType.ChannelMessageWithSource,
-					data: {
-						content: `Error: ${json.message} (${json.code})${
-							errors.length > 0
-								? `\n${errors
-										.map((e) => ` - ${e.message} (${e.code})`)
-										.join("\n")}`
-								: ""
-						}`,
-						flags: MessageFlags.Ephemeral,
+				return ctx.respondAttachments(
+					{
+						type: InteractionResponseType.ChannelMessageWithSource,
+						data: {
+							content: `Error: ${json.message} (${json.code})${
+								errors.length > 0
+									? `\n${errors
+											.map((e) => ` - ${e.message} (${e.code})`)
+											.join("\n")}`
+									: ""
+							}`,
+							flags: MessageFlags.Ephemeral,
+						},
 					},
-				});
+					{
+						"data.json": JSON.stringify(data, null, "\t"),
+						"payload.json": JSON.stringify(payload, null, "\t"),
+					},
+				);
 			}
 
 			return ctx.respond({
@@ -221,19 +227,29 @@ export default async function (ctx: Context, data: Data) {
 				} = await res.json();
 				const errors = parseErrors(json?.errors ?? {});
 
-				return ctx.respond({
-					type: InteractionResponseType.ChannelMessageWithSource,
-					data: {
-						content: `Error: ${json.message} (${json.code})${
-							errors.length > 0
-								? `\n${errors
-										.map((e) => ` - ${e.message} (${e.code})`)
-										.join("\n")}`
-								: ""
-						}`,
-						flags: MessageFlags.Ephemeral,
+				// @ts-expect-error
+				// rome-ignore lint/performance/noDelete: <explanation>
+				delete data.webhook;
+
+				return ctx.respondAttachments(
+					{
+						type: InteractionResponseType.ChannelMessageWithSource,
+						data: {
+							content: `Error: ${json.message} (${json.code})${
+								errors.length > 0
+									? `\n${errors
+											.map((e) => ` - ${e.message} (${e.code})`)
+											.join("\n")}`
+									: ""
+							}`,
+							flags: MessageFlags.Ephemeral,
+						},
 					},
-				});
+					{
+						"data.json": JSON.stringify(data, null, "\t"),
+						"payload.json": JSON.stringify(payload, null, "\t"),
+					},
+				);
 			}
 
 			return ctx.respond({

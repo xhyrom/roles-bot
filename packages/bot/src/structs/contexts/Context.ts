@@ -6,7 +6,7 @@ import {
 	RouteBases,
 	Routes,
 } from "discord-api-types/v10";
-import respond from "../../utils/respond";
+import respond, { respondAttachments } from "../../utils/respond";
 import { Env } from "../../types";
 
 export class Context {
@@ -23,6 +23,7 @@ export class Context {
 	}
 
 	public respond = respond;
+	public respondAttachments = respondAttachments;
 
 	public async editReply(content: APIInteractionResponseCallbackData) {
 		return await fetch(
