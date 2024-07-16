@@ -1,0 +1,13 @@
+---
+import Layout from "~/layouts/Layout.astro";
+---
+
+<Layout>
+  <script>
+    const { signIn } = await import("auth-astro/client");
+    signIn("discord", {
+      redirect: false,
+      callbackUrl: "/dashboard",
+    });
+  </script>
+</Layout>

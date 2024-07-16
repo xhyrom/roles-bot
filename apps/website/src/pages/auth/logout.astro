@@ -1,0 +1,14 @@
+---
+import Layout from "~/layouts/Layout.astro";
+---
+
+<Layout>
+  <script>
+    const { signOut } = await import("auth-astro/client");
+    signOut({
+      // @ts-expect-error
+      redirect: false,
+      callbackUrl: "/",
+    });
+  </script>
+</Layout>
