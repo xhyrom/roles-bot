@@ -1,6 +1,9 @@
 ---
 import type { User } from "~/env";
 import { getSession } from "auth-astro/server";
+import Layout from "~/layouts/Layout.astro";
+import Container from "~/components/Container.astro";
+import { Image } from "astro:assets";
 
 const session = await getSession(Astro.request);
 if (!session || !session.user) {
@@ -8,8 +11,44 @@ if (!session || !session.user) {
 }
 
 const user = session.user as User;
-console.log(user.guilds[0]);
 ---
 
-<p>Welcome {user.name}</p>
-{user.guilds.map((g) => g.id).join("\n\n")}
+<Layout>
+  <div class="flex items-center justify-center">
+    <Image
+      src={user.image!}
+      class="mr-5 rounded-full"
+      alt="icon"
+      width={64}
+      height={64}
+    />
+
+    <h1 class="py-12 text-5xl font-extrabold text-white">
+      @{user.name}
+    </h1>
+  </div>
+
+  <Container class="pb-4">
+    <main
+      class="flex flex-wrap items-center justify-center gap-12 pb-4 text-white"
+    >
+      {
+        user.guilds.map((guild) => (
+          <section class="flex min-h-max w-80 justify-between rounded-md border-[1px] border-neutral-800 bg-dark-100 p-6 md:w-96">
+            <div class="flex flex-row items-center">
+              <Image
+                src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp`}
+                class="mr-5 rounded-full"
+                alt="icon"
+                width={64}
+                height={64}
+              />
+
+              <h2 class="w-fit break-all text-3xl font-bold">{guild.name}</h2>
+            </div>
+          </section>
+        ))
+      }
+    </main>
+  </Container>
+</Layout>
