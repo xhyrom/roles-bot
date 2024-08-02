@@ -2,7 +2,9 @@
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
-console.log(session);
+if (!session) {
+  return Astro.redirect("/auth/login");
+}
 ---
 
-{session ? <p>Welcome {session.user?.name}</p> : <p>Not logged in</p>}
+<p>Welcome {session.user?.name}</p>

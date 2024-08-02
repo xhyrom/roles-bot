@@ -2,8 +2,11 @@
 import Layout from "~/layouts/Layout.astro";
 import Invite from "~/components/Invite.astro";
 import Computer from "~/components/Computer.astro";
+import Settings from "~/components/Settings.astro";
 import Logo from "~/assets/logo.png";
 import { Image } from "astro:assets";
+
+export const prerender = true;
 ---
 
 <Layout>
@@ -32,15 +35,22 @@ import { Image } from "astro:assets";
         <div class="mt-6 flex flex-col gap-6 md:flex-row">
           <a
             href="https://discord.com/api/oauth2/authorize?client_id=923267906941370368&permissions=268435456&scope=bot%20applications.commands"
-            class="broder-1 duration-400 flex items-center justify-center gap-x-3 rounded-lg border border-[#5865F2] bg-[#5865F2]/25 px-10 py-3 text-lg font-semibold text-white shadow-2xl shadow-[#5865F2]/25 transition-colors ease-out hover:bg-[#5865F2]/40 hover:shadow-[#5865F2]/30"
+            class="broder-1 duration-400 flex items-center justify-center gap-x-3 rounded-lg border border-blue bg-blue/25 px-10 py-3 text-lg font-semibold text-white shadow-2xl shadow-blue/25 transition-colors ease-out hover:bg-blue/40 hover:shadow-blue/30"
             target="_blank"
           >
             <Invite />
             Add to Discord</a
           >
           <a
+            href="/dashboard"
+            class="broder-1 duration-400 flex items-center justify-center gap-x-3 rounded-lg border border-gold bg-gold/25 px-10 py-3 text-lg font-semibold text-white shadow-2xl shadow-gold/25 transition-colors ease-out hover:bg-gold/40 hover:shadow-gold/30"
+          >
+            <Settings />
+            Dashboard</a
+          >
+          <a
             href="https://github.com/xHyroM/roles-bot"
-            class="broder-1 duration-400 flex items-center justify-center gap-x-3 rounded-lg border border-[#FFA500] bg-[#FFA500]/25 px-10 py-3 text-lg font-semibold text-white shadow-2xl shadow-[#FFA500]/25 transition-colors ease-out hover:bg-[#FFA500]/40 hover:shadow-[#FFA500]/30"
+            class="broder-1 duration-400 flex items-center justify-center gap-x-3 rounded-lg border border-gray-50 bg-gray-50/25 px-10 py-3 text-lg font-semibold text-white shadow-2xl shadow-gray-50/25 transition-colors ease-out hover:bg-gray-50/40 hover:shadow-gray-50/30"
             target="_blank"
           >
             <Computer />
