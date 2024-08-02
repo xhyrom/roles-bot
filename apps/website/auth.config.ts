@@ -2,22 +2,42 @@ import Discord from "@auth/core/providers/discord";
 import { defineConfig } from "auth-astro";
 
 export default defineConfig({
-	providers: [
-		Discord({
-			clientId: import.meta.env.DISCORD_CLIENT_ID,
-			clientSecret: import.meta.env.DISCORD_CLIENT_SECRET,
-		}),
-	],
-	callbacks: {
-		session({ session, token }) {
-			if (session.user && token?.sub) {
-				session.user.id = token.sub;
-			}
-			return session;
-		},
-	},
-	pages: {
-		signIn: "/auth/login",
-		signOut: "/auth/logout",
-	},
+  providers: [
+    Discord({
+      clientId: import.meta.env.DISCORD_CLIENT_ID,
+      clientSecret: import.meta.env.DISCORD_CLIENT_SECRET,
+      authorization:
+        "https://discord.com/api/oauth2/authorize?scope=guilds+identify+email",
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        token.accessToken = account.access_token;
+        token.id = profile.id;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+
+        const guilds = await fetch("https://discord.com/api/users/@me/guilds", {
+          headers: {
+            Authorization: `Bearer ${token.accessToken as string}`,
+            "Cache-Control": "max-age=300",
+          },
+        });
+
+        session.user.guilds = await guilds.json();
+      }
+
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/auth/login",
+    signOut: "/auth/logout",
+  },
 });

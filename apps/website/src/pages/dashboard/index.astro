@@ -1,10 +1,15 @@
 ---
+import type { User } from "~/env";
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
-if (!session) {
+if (!session || !session.user) {
   return Astro.redirect("/auth/login");
 }
+
+const user = session.user as User;
+console.log(user.guilds[0]);
 ---
 
-<p>Welcome {session.user?.name}</p>
+<p>Welcome {user.name}</p>
+{user.guilds.map((g) => g.id).join("\n\n")}
