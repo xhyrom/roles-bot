@@ -1,5 +1,6 @@
 ---
 import type { User } from "~/env";
+import { filterUserGuilds } from "~/lib/guilds";
 import { getSession } from "auth-astro/server";
 import Layout from "~/layouts/Layout.astro";
 import Container from "~/components/Container.astro";
@@ -11,6 +12,7 @@ if (!session || !session.user) {
 }
 
 const user = session.user as User;
+const guilds = await filterUserGuilds(user.guilds);
 ---
 
 <Layout>
@@ -33,8 +35,12 @@ const user = session.user as User;
       class="flex flex-wrap items-center justify-center gap-12 pb-4 text-white"
     >
       {
-        user.guilds.map((guild) => (
-          <section class="flex min-h-max w-80 justify-between rounded-md border-[1px] border-neutral-800 bg-dark-100 p-6 md:w-96">
+        guilds.map(({ guild, mutual }) => (
+          <section
+            class={`flex min-h-max w-80 justify-between rounded-md border-[1px] border-neutral-800 bg-dark-100 p-6 md:w-96 ${
+              !mutual && "brightness-50"
+            }`}
+          >
             <div class="flex flex-row items-center">
               <Image
                 src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp`}
