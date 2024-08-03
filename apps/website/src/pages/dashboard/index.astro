@@ -3,6 +3,10 @@ import Layout from "~/layouts/Layout.astro";
 import Container from "~/components/Container.astro";
 import GuildSelector from "~/components/preact/GuildSelector";
 import UserInfo from "~/components/dashboard/UserInfo.astro";
+
+if (!Astro.locals.user) {
+  return Astro.redirect("/auth/login");
+}
 ---
 
 <Layout>

@@ -1,9 +1,8 @@
 import type { APIRoute } from "astro";
 import { filterUserGuilds, getUserGuilds } from "~/lib/guilds";
-import { getUser } from "~/lib/user";
 
-export const GET: APIRoute = async ({ request }) => {
-  const user = await getUser(request);
+export const GET: APIRoute = async ({ locals }) => {
+  const user = locals.user;
   if (!user) {
     return new Response(null, {
       status: 401,
@@ -11,7 +10,7 @@ export const GET: APIRoute = async ({ request }) => {
   }
 
   const guilds = await getUserGuilds(user);
-  const res = await filterUserGuilds(guilds);
+  const res = await filterUserGuilds(guilds, locals.runtime.env);
 
   return Response.json(res);
 };

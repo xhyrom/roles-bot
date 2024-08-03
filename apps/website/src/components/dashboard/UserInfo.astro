@@ -1,28 +1,12 @@
 ---
 import { Image } from "astro:assets";
-import type { User } from "~/env";
-import { getUser } from "~/lib/user";
 
-interface Props {
-  user?: User;
-}
-
-let user: User;
-if (!Astro.props.user) {
-  const u = await getUser(Astro.request);
-  if (!u) {
-    return Astro.redirect("/auth/login");
-  }
-
-  user = u;
-} else {
-  user = Astro.props.user;
-}
+const user = Astro.locals.user;
 ---
 
 <div class="flex items-center justify-center">
   <Image
-    src={user.image!}
+    src={`https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.webp`}
     class="mr-5 rounded-full"
     alt="icon"
     width={64}
@@ -30,6 +14,6 @@ if (!Astro.props.user) {
   />
 
   <h1 class="break-all py-12 text-5xl font-extrabold text-white">
-    @{user.name}
+    @{user.username}
   </h1>
 </div>
