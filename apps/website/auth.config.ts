@@ -3,6 +3,7 @@ import { defineConfig } from "auth-astro";
 import type { User } from "~/env";
 
 export default defineConfig({
+  secret: import.meta.env.AUTH_SECRET,
   providers: [
     Discord({
       clientId: import.meta.env.DISCORD_CLIENT_ID,
