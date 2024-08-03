@@ -2,12 +2,18 @@ import Discord from "@auth/core/providers/discord";
 import { defineConfig } from "auth-astro";
 import type { User } from "~/env";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const { env } = process;
+
 export default defineConfig({
-  secret: import.meta.env.AUTH_SECRET,
+  secret: env.AUTH_SECRET,
   providers: [
     Discord({
-      clientId: import.meta.env.DISCORD_CLIENT_ID,
-      clientSecret: import.meta.env.DISCORD_CLIENT_SECRET,
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
       authorization:
         "https://discord.com/api/oauth2/authorize?scope=guilds+identify+email",
     }),
