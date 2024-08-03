@@ -1,0 +1,23 @@
+---
+import { getGuild } from "~/lib/guilds";
+import { getUser, isUserEligible } from "~/lib/user";
+
+const { id } = Astro.params;
+
+const user = await getUser(Astro.request);
+if (!user || !id) {
+  return Astro.redirect("/auth/login");
+}
+
+const guild = await getGuild(user, id);
+if (!guild) {
+  return Astro.redirect("/dashboard");
+}
+
+const eligible = isUserEligible(guild);
+if (!eligible) {
+  return Astro.redirect("/dashboard");
+}
+---
+
+You can manage guild {guild.name} with id {guild.id}

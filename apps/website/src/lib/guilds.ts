@@ -1,4 +1,17 @@
 import type { Guild, MutualeGuild, User } from "~/env";
+import { isUserEligible } from "./user";
+
+export async function getGuild(
+  user: User,
+  guildId: string
+): Promise<Guild | undefined> {
+  const guilds = await getUserGuilds(user);
+  const guild = guilds.find((g) => g.id === guildId);
+
+  if (!guild || !(await isMutualGuild(guild))) return undefined;
+
+  return guild;
+}
 
 export async function getUserGuilds(user: User): Promise<Guild[]> {
   const discordApiGuildsResponse = await fetch(
@@ -14,12 +27,11 @@ export async function getUserGuilds(user: User): Promise<Guild[]> {
   return (await discordApiGuildsResponse.json()) as Guild[];
 }
 
-// Checks if user has AMDINISTRATOR permissions in the guild
 export async function filterUserGuilds(
   guilds: Guild[]
 ): Promise<MutualeGuild[]> {
   const filtered = guilds
-    .filter((g) => (BigInt(g.permissions) & 0x8n) == 0x8n)
+    .filter(isUserEligible)
     .sort((a, b) => Number(b.owner) - Number(a.owner));
 
   const result: MutualeGuild[] = [];

@@ -1,10 +1,22 @@
 ---
 import { Image } from "astro:assets";
+import type { User } from "~/env";
 import { getUser } from "~/lib/user";
 
-const user = await getUser(Astro.request);
-if (!user) {
-  return Astro.redirect("/auth/login");
+interface Props {
+  user?: User;
+}
+
+let user: User;
+if (!Astro.props.user) {
+  const u = await getUser(Astro.request);
+  if (!u) {
+    return Astro.redirect("/auth/login");
+  }
+
+  user = u;
+} else {
+  user = Astro.props.user;
 }
 ---
 
