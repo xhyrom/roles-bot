@@ -24,7 +24,7 @@ export default defineConfig({
       },
     },
     ssr: {
-      external: ["node:path", "path"],
+      external: ["node:path", "path", "os", "crypto"],
     },
   },
 });
