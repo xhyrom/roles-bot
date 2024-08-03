@@ -4,7 +4,7 @@ import type { User as AuthCoreUser } from "@auth/core/types";
 
 export type User = AuthCoreUser & {
   global_name: string;
-  guilds: Guild[];
+  discordAccessToken: string;
 };
 
 export interface Guild {
@@ -13,4 +13,9 @@ export interface Guild {
   icon: string;
   permissions: string;
   owner: boolean;
+}
+
+export interface MutualeGuild {
+  mutual: boolean;
+  guild: Guild;
 }

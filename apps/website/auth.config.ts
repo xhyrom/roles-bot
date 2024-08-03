@@ -29,17 +29,8 @@ export default defineConfig({
         (session.user as unknown as User).global_name =
           token.global_name as string;
 
-        const guilds = await fetch(
-          "https://discord.com/api/v10/users/@me/guilds",
-          {
-            headers: {
-              Authorization: `Bearer ${token.accessToken as string}`,
-              "Cache-Control": "max-age=300",
-            },
-          }
-        );
-
-        (session.user as unknown as User).guilds = await guilds.json();
+        (session.user as unknown as User).discordAccessToken =
+          token.accessToken as string;
       }
 
       return session;

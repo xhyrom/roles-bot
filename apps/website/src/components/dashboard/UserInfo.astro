@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+import { getUser } from "~/lib/user";
+
+const user = await getUser(Astro.request);
+if (!user) {
+  return Astro.redirect("/auth/login");
+}
+---
+
+<div class="flex items-center justify-center">
+  <Image
+    src={user.image!}
+    class="mr-5 rounded-full"
+    alt="icon"
+    width={64}
+    height={64}
+  />
+
+  <h1 class="break-all py-12 text-5xl font-extrabold text-white">
+    @{user.name}
+  </h1>
+</div>
