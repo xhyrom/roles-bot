@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+const { id, name, icon } = Astro.props;
+---
+
+<div class="flex items-center justify-center">
+  <Image
+    src={`https://cdn.discordapp.com/icons/${id}/${icon}.webp`}
+    class="mr-5 rounded-full"
+    alt="icon"
+    width={64}
+    height={64}
+  />
+
+  <h1 class="break-all py-12 text-5xl font-extrabold text-white">
+    {name}
+  </h1>
+</div>
