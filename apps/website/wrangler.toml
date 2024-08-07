@@ -1,0 +1,6 @@
+name = "roles-bot"
+
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "roles-bot-dashboard"
+database_id = "fdc6f902-9142-44bf-9be9-b38d351ffd27"
