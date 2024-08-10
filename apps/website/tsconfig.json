@@ -1,12 +1,11 @@
 {
-  "extends": "astro/tsconfigs/strictest",
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
     "strictNullChecks": true,
-    "allowJs": true,
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
-    },
-    "types": ["./src/env.d.ts"]
+    }
   }
 }

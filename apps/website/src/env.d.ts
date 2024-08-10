@@ -1,7 +1,6 @@
 /// <reference types="astro/client" />
 
-type D1Database = import("@cloudflare/workers-types").D1Database;
-type ENV = {
+type Env = {
   GITHUB_APP_NAME: string;
   DISCORD_CLIENT_ID: string;
   DISCORD_CLIENT_SECRET: string;
@@ -10,7 +9,7 @@ type ENV = {
   DB: D1Database;
 };
 
-export interface Guild {
+/*export interface Guild {
   id: string;
   name: string;
   icon: string;
@@ -21,9 +20,9 @@ export interface Guild {
 export interface MutualeGuild {
   mutual: boolean;
   guild: Guild;
-}
+}*/
 
-type Runtime = import("@astrojs/cloudflare").Runtime<ENV>;
+type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
 
 // https://github.com/withastro/astro/issues/7394#issuecomment-1975657601
 declare namespace App {

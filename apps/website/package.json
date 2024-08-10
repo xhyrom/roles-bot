@@ -9,7 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^11.0.1",
+    "@astrojs/cloudflare": "^11.0.4",
     "@astrojs/preact": "^3.5.1",
     "@astrojs/prefetch": "^0.2.1",
     "@astrojs/sitemap": "^3.1.6",
@@ -25,6 +25,7 @@
     "tailwindcss": "^3.3.1"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240806.0",
     "autoprefixer": "^10.4.14",
     "cssnano": "^6.0.0",
     "postcss": "^8.4.21",
