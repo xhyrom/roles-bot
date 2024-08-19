@@ -50,6 +50,20 @@ export async function GET(context: APIContext): Promise<Response> {
         sessionCookie.value,
         sessionCookie.attributes
       );
+
+      await context.locals.runtime.env.DB.prepare(
+        "UPDATE user SET username = ?2, avatar = ?3, access_token = ?4,access_token_expiration = ?5, refresh_token = ?6 WHERE discord_id = ?1"
+      )
+        .bind(
+          discordUser.id,
+          discordUser.username,
+          discordUser.avatar,
+          tokens.accessToken,
+          tokens.accessTokenExpiresAt.getTime(),
+          tokens.refreshToken
+        )
+        .first<UserRow>();
+
       return context.redirect("/dashboard");
     }
 

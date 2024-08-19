@@ -8,6 +8,8 @@ export async function GET(context: APIContext): Promise<Response> {
     scopes: ["identify", "guilds"],
   });
 
+  console.log("login");
+
   context.cookies.set("discord_oauth_state", state, {
     path: "/",
     secure: import.meta.env.PROD,
