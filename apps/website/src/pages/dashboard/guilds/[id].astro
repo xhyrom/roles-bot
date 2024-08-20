@@ -1,6 +1,7 @@
 ---
 import GuildInfo from "~/components/dashboard/GuildInfo.astro";
 import UserInfo from "~/components/dashboard/UserInfo.astro";
+import MultiStepForm from "~/components/preact/MultiStepForm";
 import Layout from "~/layouts/Layout.astro";
 import { getGuild } from "~/lib/guilds";
 import { isUserEligible } from "~/lib/user";
@@ -32,5 +33,19 @@ if (!eligible) {
     <GuildInfo id={guild.id} name={guild.name} icon={guild.icon} />
   </div>
 
-  You can manage guild {guild.name} with id {guild.id}
+  <div class="mx-auto mt-8 w-full max-w-lg">
+    <MultiStepForm guildId={guild.id} client:load />
+  </div>
+
+  <style>
+    .step {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .step.active {
+      background-color: #4caf50;
+      color: white;
+    }
+  </style>
 </Layout>
