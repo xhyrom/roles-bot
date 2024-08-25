@@ -1,7 +1,11 @@
-import type { APIRoute } from "astro";
-import { filterUserGuilds, getUserGuilds } from "~/lib/guilds";
+import type { APIContext, APIRoute } from "astro";
+import { getGuildChannels } from "~/lib/guilds";
 
-export const GET: APIRoute = async ({ locals }) => {
+interface APIParams {
+  id: string;
+}
+
+export const GET: APIRoute = async ({ params, locals }) => {
   const user = locals.user;
   if (!user) {
     return new Response(null, {
@@ -9,6 +13,7 @@ export const GET: APIRoute = async ({ locals }) => {
     });
   }
 
-  console.log(user);
-  return Response.json([]);
+  const channels = await getGuildChannels(params.id!, locals.runtime.env);
+
+  return Response.json(channels);
 };

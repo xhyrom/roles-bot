@@ -14,6 +14,20 @@ export async function getGuild(
   return guild;
 }
 
+export async function getGuildChannels(guildId: string, env) {
+  const discordApiGuildChannelsResponse = await fetch(
+    `https://discord.com/api/v10/guilds/${guildId}/channels`,
+    {
+      headers: {
+        Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+        "Cache-Control": "max-age=300",
+      },
+    }
+  );
+
+  return await discordApiGuildChannelsResponse.json();
+}
+
 export async function getUserGuilds(user): Promise<Guild[]> {
   const discordApiGuildsResponse = await fetch(
     "https://discord.com/api/v10/users/@me/guilds",
