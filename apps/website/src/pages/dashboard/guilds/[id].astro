@@ -1,0 +1,51 @@
+---
+import GuildInfo from "~/components/dashboard/GuildInfo.astro";
+import UserInfo from "~/components/dashboard/UserInfo.astro";
+import MultiStepForm from "~/components/preact/MultiStepForm";
+import Layout from "~/layouts/Layout.astro";
+import { getGuild } from "~/lib/guilds";
+import { isUserEligible } from "~/lib/user";
+
+const { id } = Astro.params;
+
+const user = Astro.locals.user;
+if (!user || !id) {
+  return Astro.redirect("/auth/login");
+}
+
+const guild = await getGuild(user, id, Astro.locals.runtime.env);
+if (!guild) {
+  return Astro.redirect("/dashboard");
+}
+
+const eligible = isUserEligible(guild);
+if (!eligible) {
+  return Astro.redirect("/dashboard");
+}
+---
+
+<Layout>
+  <div class="flex flex-col items-center justify-center md:flex-row">
+    <UserInfo />
+
+    <p class="px-6 text-5xl text-white">on</p>
+
+    <GuildInfo id={guild.id} name={guild.name} icon={guild.icon} />
+  </div>
+
+  <div class="mx-auto mt-8 w-full max-w-lg">
+    <MultiStepForm guildId={guild.id} client:load />
+  </div>
+
+  <style>
+    .step {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .step.active {
+      background-color: #4caf50;
+      color: white;
+    }
+  </style>
+</Layout>
