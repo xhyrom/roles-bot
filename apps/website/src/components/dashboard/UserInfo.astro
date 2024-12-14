@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+
+const user = Astro.locals.user;
+---
+
+<div class="flex items-center justify-center">
+  <Image
+    src={`https://cdn.discordapp.com/avatars/${user.discordId}/${user.avatar}.webp`}
+    class="mr-5 rounded-full"
+    alt="icon"
+    width={64}
+    height={64}
+  />
+
+  <h1 class="break-all py-12 text-5xl font-extrabold text-white">
+    @{user.username}
+  </h1>
+</div>
