@@ -10,5 +10,8 @@
   "devDependencies": {
     "esbuild": "^0.15.11",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
   }
 }
