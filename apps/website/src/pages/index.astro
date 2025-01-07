@@ -2,6 +2,7 @@
 import Layout from "~/layouts/Layout.astro";
 import Invite from "~/components/Invite.astro";
 import Computer from "~/components/Computer.astro";
+import Documentation from "~/components/Documentation.astro";
 import { Image } from "@astrojs/image/components";
 import Logo from "~/assets/logo.png";
 ---
@@ -37,6 +38,13 @@ import Logo from "~/assets/logo.png";
           >
             <Invite />
             Add to Discord</a
+          >
+          <a
+            href="/getting-started"
+            class="border-1 duration-400 flex items-center justify-center gap-x-3 rounded-lg border border-[#32CD32] bg-[#32CD32]/25 px-10 py-3 text-lg font-semibold text-white shadow-2xl shadow-[#32CD32]/25 transition-colors ease-out hover:bg-[#32CD32]/40 hover:shadow-[#32CD32]/30"
+          >
+            <Documentation />
+            Documentation</a
           >
           <a
             href="https://github.com/xHyroM/roles-bot"
