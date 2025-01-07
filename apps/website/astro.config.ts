@@ -6,7 +6,6 @@ import robotsTxt from "astro-robots-txt";
 import compress from "astro-compress";
 import tailwind from "@astrojs/tailwind";
 import { CONFIG } from "./src/config";
-import image from "@astrojs/image";
 import starlight from "@astrojs/starlight";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -38,14 +37,13 @@ export default defineConfig({
       sitemap: true,
     }),
     compress({
-      css: true,
-      html: true,
-      img: true,
-      js: true,
-      svg: true,
+      CSS: true,
+      HTML: true,
+      Image: true,
+      JavaScript: true,
+      SVG: true,
     }),
     tailwind(),
-    image(),
   ],
   vite: {
     resolve: {

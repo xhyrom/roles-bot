@@ -9,8 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/image": "^0.18.0",
-    "@astrojs/prefetch": "^0.4.1",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/starlight": "^0.30.4",
     "@astrojs/tailwind": "^5.1.4",
