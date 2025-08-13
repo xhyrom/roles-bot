@@ -27,13 +27,41 @@ new Command({
 		// Delete the data if it exists
 		await REDIS.del(`roles-bot-setup:${ctx.guildId}`);
 
-		const roles = (await (
-			await fetch(`${RouteBases.api}${Routes.guildRoles(ctx.guildId)}`, {
-				headers: {
-					Authorization: `Bot ${ctx.env.token}`,
+		// Fetch roles
+		const rolesResponse = await fetch(`${RouteBases.api}${Routes.guildRoles(ctx.guildId)}`, {
+			headers: {
+				Authorization: `Bot ${ctx.env.token}`,
+			},
+		});
+
+		// Handle rate limits
+		if (rolesResponse.status === 429) {
+			return ctx.respond({
+				type: InteractionResponseType.ChannelMessageWithSource,
+				data: {
+					content: `This bot is hosted on the free Cloudflare Workers plan. Currently, Discord sometimes blocks requests from Cloudflare Workers due to global ratelimits, so **you won’t be able to set up a new panel right now**.
+
+To continue, you can either:
+**a)** Host your own instance: https://github.com/xhyrom/roles-bot
+**b)** Wait a while and try again.
+
+As a student, I don’t have resources and stable income for hosting, but I plan to buy a VPS in the next few weeks.
+
+If you enjoy the bot or want to support me, you can do so here: https://ko-fi.com/xhyrom.
+
+Thanks for using this bot ♥️.
+
+Sincerely,
+Jozef Steinhübl
+contact@xhyrom.dev
+https://github.com/xhyrom
+<@525316393768452098>`,
+					flags: MessageFlags.Ephemeral,
 				},
-			})
-		).json()) as APIRole[];
+			});
+		}
+
+		const roles = (await rolesResponse.json()) as APIRole[];
 
 		await REDIS.setex(
 			`roles-bot-setup-roles:${ctx.guildId}`,
