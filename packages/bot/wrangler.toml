@@ -1,3 +1,4 @@
 name = "roles-bot"
 account_id = "294bee38d448e390dab3757215c63f03"
-compatibility_date = "2022-07-12"
+compatibility_date = "2024-09-03"
+main = "src/index.ts"
