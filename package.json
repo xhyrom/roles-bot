@@ -12,6 +12,7 @@
     "lint": "rome check .",
     "format": "rome format --write ."
   },
+  "workspaces": ["packages/*","apps/*"],
   "keywords": [],
   "author": "xHyroM",
   "license": "MIT",
